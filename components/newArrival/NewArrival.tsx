@@ -1,4 +1,8 @@
 import Image from "next/image";
+import prod1 from "../../public/images/products/product1.jpg";
+import prod2 from "../../public/images/products/product2.jpg";
+import prod3 from "../../public/images/products/product3.jpg";
+import prod4 from "../../public/images/products/product4.jpg";
 
 const NewArrival = () => {
   return (
@@ -10,9 +14,11 @@ const NewArrival = () => {
         <div className="bg-white shadow rounded overflow-hidden group">
           <div className="relative">
             <Image
-              src="assets/images/products/product1.jpg"
+              src={prod1}
               alt="product 1"
               className="w-full"
+              width={500}
+              height={450}
             />
             <div
               className="absolute inset-0 bg-black bg-opacity-40 flex items-center 
@@ -75,9 +81,11 @@ const NewArrival = () => {
         <div className="bg-white shadow rounded overflow-hidden group">
           <div className="relative">
             <Image
-              src="assets/images/products/product4.jpg"
+              src={prod4}
               alt="product 1"
               className="w-full"
+              width={500}
+              height={450}
             />
             <div
               className="absolute inset-0 bg-black bg-opacity-40 flex items-center 
@@ -140,9 +148,11 @@ const NewArrival = () => {
         <div className="bg-white shadow rounded overflow-hidden group">
           <div className="relative">
             <Image
-              src="assets/images/products/product2.jpg"
+              src={prod2}
               alt="product 1"
               className="w-full"
+              width={500}
+              height={450}
             />
             <div
               className="absolute inset-0 bg-black bg-opacity-40 flex items-center 
@@ -205,9 +215,11 @@ const NewArrival = () => {
         <div className="bg-white shadow rounded overflow-hidden group">
           <div className="relative">
             <Image
-              src="assets/images/products/product3.jpg"
+              src={prod3}
               alt="product 1"
               className="w-full"
+              width={500}
+              height={450}
             />
             <div
               className="absolute inset-0 bg-black bg-opacity-40 flex items-center 

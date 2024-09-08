@@ -1,35 +1,55 @@
+import Image from "next/image";
+import product1 from "../../public/images/products/product1.jpg";
+import product2 from "../../public/images/products/product2.jpg";
+import product3 from "../../public/images/products/product3.jpg";
+import product4 from "../../public/images/products/product4.jpg";
+import product5 from "../../public/images/products/product5.jpg";
+import product6 from "../../public/images/products/product6.jpg";
+
 const ProductDetails = () => {
   return (
     <div className="container grid grid-cols-2 gap-6">
       <div>
-        <img
-          src="../assets/images/products/product1.jpg"
+        <Image
+          src={product1}
           alt="product"
           className="w-full"
+          width={500}
+          height={500}
         />
         <div className="grid grid-cols-5 gap-4 mt-4">
-          <img
-            src="../assets/images/products/product2.jpg"
+          <Image
+            src={product2}
             alt="product2"
+            width={500}
+            height={500}
             className="w-full cursor-pointer border border-primary"
           />
-          <img
-            src="../assets/images/products/product3.jpg"
+          <Image
+            src={product3}
+            width={500}
+            height={500}
             alt="product2"
             className="w-full cursor-pointer border"
           />
-          <img
-            src="../assets/images/products/product4.jpg"
+          <Image
+            src={product4}
+            width={500}
+            height={500}
             alt="product2"
             className="w-full cursor-pointer border"
           />
-          <img
-            src="../assets/images/products/product5.jpg"
+          <Image
+            src={product5}
+            width={500}
+            height={500}
             alt="product2"
             className="w-full cursor-pointer border"
           />
-          <img
-            src="../assets/images/products/product6.jpg"
+          <Image
+            src={product6}
+            width={500}
+            height={500}
             alt="product2"
             className="w-full cursor-pointer border"
           />

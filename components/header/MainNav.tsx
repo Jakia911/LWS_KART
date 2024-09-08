@@ -2,7 +2,7 @@ import Image from "next/image";
 import bed2 from "../../public/images/icons/bed-2.svg";
 import bed from "../../public/images/icons/bed.svg";
 import office from "../../public/images/icons/office.svg";
-import cafe from "../../public/images/icons/outdoor-cafe.svgg";
+import cafe from "../../public/images/icons/outdoor-cafe.svg";
 import sofa from "../../public/images/icons/sofa.svg";
 import terrace from "../../public/images/icons/terrace.svg";
 
@@ -21,7 +21,7 @@ const MainNav = () => {
 
             <div
               className="absolute left-0 top-full bg-white shadow-md py-3 divide-y divide-gray-300 divide-dashed opacity-0 group-hover:opacity-100 transition duration-300 invisible group-hover:visible w-[600px]"
-              style="width: 300px;"
+              style={{ width: 300 }}
             >
               <a
                 href="#"

@@ -1,3 +1,8 @@
+import Image from "next/image";
+import delVan from "../../public/images/icons/delivery-van.svg";
+import moneyBack from "../../public/images/icons/money-back.svg";
+import serviceHours from "../../public/images/icons/service-hours.svg";
+
 const Features = () => {
   return (
     <div>
@@ -5,9 +10,11 @@ const Features = () => {
         <div className="w-10/12 grid grid-cols-1 md:grid-cols-3 gap-6 mx-auto justify-center">
           <div className="border border-primary rounded-sm px-3 py-6 flex justify-center items-center gap-5">
             <Image
-              src="assets/images/icons/delivery-van.svg"
+              src={delVan}
               alt=""
               className="w-12 h-12 object-contain"
+              width={400}
+              height={400}
             />
             <div>
               <h4 className="font-medium capitalize text-lg">Free Shipping</h4>
@@ -16,9 +23,11 @@ const Features = () => {
           </div>
           <div className="border border-primary rounded-sm px-3 py-6 flex justify-center items-center gap-5">
             <Image
-              src="assets/images/icons/money-back.svg"
+              src={moneyBack}
               alt="Delivery"
               className="w-12 h-12 object-contain"
+              width={400}
+              height={400}
             />
             <div>
               <h4 className="font-medium capitalize text-lg">Money Rturns</h4>
@@ -27,9 +36,11 @@ const Features = () => {
           </div>
           <div className="border border-primary rounded-sm px-3 py-6 flex justify-center items-center gap-5">
             <Image
-              src="assets/images/icons/service-hours.svg"
+              src={serviceHours}
               alt="Delivery"
               className="w-12 h-12 object-contain"
+              width={400}
+              height={400}
             />
             <div>
               <h4 className="font-medium capitalize text-lg">24/7 Support</h4>
