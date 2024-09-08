@@ -1,0 +1,199 @@
+
+
+[
+  {
+     "_id": {
+    "$oid": "66263526f50c2e548501f285"
+  },
+    "title": "Jajj two seater Sofa",
+    "price": 109.95,
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit",
+    "category": "Sofa",
+    "image": "https://i.ibb.co.com/1sg7jzV/product1.jpg",
+    "trending":false,
+    "topArrival":true,
+    "rating": {
+      "rate": 3.9,
+      "count": 120
+    }
+  },
+  {
+    "_id": {
+    "$oid": "66263526f50c2e548501f286"
+  },
+    "title": "Four Seater sofa",
+    "price": 22.3,
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit",
+    "category": "Sofa",
+    "image": "https://i.ibb.co.com/b6zvCSG/product2.jpg",
+     "trending":true,
+      "topArrival":false,
+    "rating": {
+      "rate": 4.1,
+      "count": 259
+    }
+  },
+  {
+    "_id": {
+    "$oid": "66263526f50c2e548501f287"
+  },
+    "title": "Deluxe queen Airbed",
+    "price": 55.99,
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit",
+    "category": "Bed",
+    "image": "https://i.ibb.co.com/WgJTFrL/product3.jpg",
+     "trending":false,
+     "topArrival":true,
+    "rating": {
+      "rate": 4.7,
+      "count": 500
+    }
+  },
+  {
+   "_id": {
+    "$oid": "66263526f50c2e548501f288"
+  },
+    "title": "White wooden bed",
+    "price": 15.99,
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit",
+    "category": "Bed",
+    "image": "https://i.ibb.co.com/yX1pJsf/product4.jpg",
+     "trending":true,
+      "topArrival":true,
+    "rating": {
+      "rate": 2.1,
+      "count": 430
+    }
+  },
+  {
+   "_id": {
+    "$oid": "66263526f50c2e548501f289"
+  },
+    "title": "Benyled Rectangle Chair",
+    "price": 695,
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit",
+    "category": " Chair",
+    "image": "https://i.ibb.co.com/9WMWNRr/product8.jpg",
+     "trending":false,
+      "topArrival":false,
+    "rating": {
+      "rate": 4.6,
+      "count": 400
+    }
+  },
+  {
+   "_id": {
+    "$oid": "66263526f50c2e548501f28a"
+  },
+    "title": "Kick velvet dining Chair",
+    "price": 168,
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit",
+    "category": "Chair",
+    "image": "https://i.ibb.co.com/fY5H3Gj/product5.jpg",
+     "trending":false,
+     "topArrival":true,
+    "rating": {
+      "rate": 3.9,
+      "count": 70
+    }
+  },
+  {
+    "_id": {
+    "$oid": "66263526f50c2e548501f28b"
+  },
+    "title": "Outdoor sun Glider",
+    "price": 9.99,
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit",
+    "category": "Glider",
+    "image": "https://i.ibb.co.com/FgzSx6j/product6.jpg",
+     "trending":false,
+      "topArrival":false,
+    "rating": {
+      "rate": 3,
+      "count": 400
+    }
+  },
+  {
+   "_id": {
+    "$oid": "66263526f50c2e548501f28c"
+  },
+    "title": "Chaise lounge Glider",
+    "price": 10.99,
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit",
+    "category": "Glider",
+    "image": "https://i.ibb.co.com/K2dPXjM/product7.jpg",
+     "trending":true,
+     "topArrival":false,
+    "rating": {
+      "rate": 1.9,
+      "count": 100
+    }
+  },
+  {
+   "_id": {
+    "$oid": "66263526f50c2e548501f28e"
+  },
+    "title": "Velvet Armchair ",
+    "price": 64,
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit",
+    "category": "Armchair",
+    "image": "https://i.ibb.co.com/K2dPXjM/product8.jpg",
+     "trending":false,
+      "topArrival":false,
+    "rating": {
+      "rate": 3.3,
+      "count": 203
+    }
+  },
+  {
+     "_id": {
+    "$oid": "66263526f50c2e548501f28f"
+  },
+    "title": "Taylor armchair",
+    "price": 109,
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit",
+    "category": "Armchair",
+    "image": "https://i.ibb.co.com/nCsK7MH/product10.jpg",
+     "trending":true,
+     "topArrival":false,
+    "rating": {
+      "rate": 2.9,
+      "count": 470
+    }
+  },
+  {
+   "_id": {
+    "$oid": "66263526f50c2e548501f290"
+  },
+    "title": "Modern Linen gray Bed",
+    "price": 109,
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit",
+    "category": "Bed",
+    "image": "https://i.ibb.co.com/nRRrqN4/product11.jpg",
+     "trending":false,
+      "topArrival":false,
+    "rating": {
+      "rate": 4.8,
+      "count": 319
+    }
+  },
+  {
+    "_id": {
+    "$oid": "66263526f50c2e548501f291"
+  },
+    "title": "Nightstand Black Drawer ",
+    "price": 114,
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit Lorem ipsum dolor sit amet consectetur adipisicing elit",
+    "category": "Drawer",
+    "image": "https://i.ibb.co.com/qsLxJT1/product12.jpg",
+     "trending":false,
+     "topArrival":true,
+    "rating": {
+      "rate": 4.8,
+      "count": 400
+    }
+  }
+ 
+  
+  
+]
