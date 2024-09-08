@@ -1,39 +1,25 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Document, Model, Schema } from "mongoose";
 
-const productSchema = new Schema({
-    title: {
-      required: true,
-      type: String
-    },
-     price: {
-      required: false,
-      type: Number
-    },
-    description: {
-      required: true,
-      type: String
-    },
-    category: {
-      required: true,
-      type: String
-    },
-    image: {
-      required: false,
-      type: String
-    },
-    trending: {
-      required: false,
-      type: Boolean
-    },
-     topArrival: {
-      required: false,
-      type: Boolean
-    },
-    rating: {
-      required: false,
-      type: Object
-    },
-    
-  });
+interface IProduct extends Document {
+    title: string;
+    price?: number;
+    description: string;
+    category: string;
+    image?: string;
+    trending?: boolean;
+    topArrival?: boolean;
+  
+}
+const productSchema = new Schema<IProduct>({
+  title: { required: true, type: String },
+  price: { required: false, type: Number },
+  description: { required: true, type: String },
+  category: { required: true, type: String },
+  image: { required: false, type: String },
+  trending: { required: false, type: Boolean },
+  topArrival: { required: false, type: Boolean },
+ 
+});
 
-  export const productModel = mongoose.models.products ?? mongoose.model("products", productSchema);
+// Create the Mongoose model for products
+export const productModel: Model<IProduct> = mongoose.models.products ?? mongoose.model<IProduct>("products", productSchema);
