@@ -9,18 +9,18 @@ import Image from "next/image";
 import method from "../public/images/methods.png";
 import offer from "../public/images/offer.jpg";
 
-export default async function Home() {
+import { ReactElement } from "react";
+
+export default async function Home(): Promise<ReactElement> {
   await dbConnect();
+
   return (
     <>
       <main>
         <Banner />
-
         <Features />
-
         <Categories />
         <NewArrival />
-
         <div className="container pb-16">
           <a href="#">
             <Image
@@ -31,11 +31,8 @@ export default async function Home() {
             />
           </a>
         </div>
-
         <TrendingProducts />
-
         <Footer />
-
         <div className="bg-gray-800 py-4">
           <div className="container flex items-center justify-between">
             <p className="text-white">

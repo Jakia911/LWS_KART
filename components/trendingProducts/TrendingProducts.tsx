@@ -1,10 +1,13 @@
 import Image from "next/image";
+import { getAllProducts } from "../../database/queries/index";
 import prod1 from "../../public/images/products/product1.jpg";
 import prod2 from "../../public/images/products/product2.jpg";
 import prod4 from "../../public/images/products/product4.jpg";
 import prod5 from "../../public/images/products/product5.jpg";
 
-const TrendingProducts = () => {
+const TrendingProducts = async () => {
+  const products = await getAllProducts();
+  console.log(products);
   return (
     <div className="container pb-16">
       <h2 className="text-2xl font-medium text-gray-800 uppercase mb-6">
