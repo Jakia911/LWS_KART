@@ -1,13 +1,13 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import CredentialsProvider from "next-auth/providers/credentials";
+import { Adapter } from 'next-auth/adapters'
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
-import { userModel } from "./models/user-model";
 import mongoClientPromise from "./database/mongoClientPromise";
 
 // Define NextAuth options with TypeScript
 const authOptions: NextAuthOptions = {
-    adapter: MongoDBAdapter(mongoClientPromise, { databaseName: process.env.ENVIRONMENT }),
+    adapter: MongoDBAdapter(mongoClientPromise, { databaseName: process.env.ENVIRONMENT }) as Adapter,
+   
     session: {
         strategy: 'jwt',
     },
