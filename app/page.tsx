@@ -4,16 +4,14 @@ import Features from "@/components/features/Features";
 import Footer from "@/components/footer/Footer";
 import NewArrival from "@/components/newArrival/NewArrival";
 import TrendingProducts from "@/components/trendingProducts/TrendingProducts";
+// import { dbConnect } from "@/services/mongo";
 import { dbConnect } from "@/services/mongo";
 import Image from "next/image";
 import method from "../public/images/methods.png";
 import offer from "../public/images/offer.jpg";
 
-import { ReactElement } from "react";
-
-export default async function Home(): Promise<ReactElement> {
+export default async function Home() {
   await dbConnect();
-
   return (
     <>
       <main>

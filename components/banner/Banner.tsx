@@ -1,6 +1,7 @@
+import banner from "../../public/images/banner-bg.jpg";
 const Banner = () => {
   const bannerStyle = {
-    backgroundImage: "url('assets/images/banner-bg.jpg')",
+    backgroundImage: `url(${banner})`,
   };
   return (
     <div>

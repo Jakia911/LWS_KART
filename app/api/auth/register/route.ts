@@ -5,23 +5,22 @@ import { NextResponse } from "next/server";
 
 // Define the structure of the request body
 interface UserRequestBody {
-  fname: string;
-  lname: string;
+  name:string,
   email: string;
   password: string;
 }
 
 export const POST = async (request: Request): Promise<NextResponse> => {
-  const { fname, lname, email, password }: UserRequestBody = await request.json();
+  const { name, email, password }: UserRequestBody = await request.json();
 
-  console.log(fname, lname, email, password);
+  console.log(name,email, password);
 
   await dbConnect();
 
   const hashedPassword = await bcrypt.hash(password, 5);
 
   const newUser = {
-    name: `${fname} ${lname}`,
+    name: `${name} `,
     email,
     password: hashedPassword,
   };

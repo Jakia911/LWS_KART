@@ -1,6 +1,6 @@
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import { compare } from "bcryptjs";
-import { ObjectId } from "mongodb";
+import { ObjectId } from "mongoose";
 import NextAuth, { NextAuthOptions, User } from "next-auth";
 import { Adapter } from 'next-auth/adapters';
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -15,8 +15,9 @@ const authOptions: NextAuthOptions = {
     session: {
         strategy: 'jwt',
     },
-    providers: [
-           CredentialsProvider({
+  providers: [
+      
+ CredentialsProvider({
             credentials: {
     email: {  },
     password: {  },
@@ -53,6 +54,7 @@ const authOptions: NextAuthOptions = {
     }
   },
         }),
+          
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID as string,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
@@ -72,36 +74,5 @@ export const {
  
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
-
-// export default authOptions;
-
-//  CredentialsProvider({
-//             credentials: {
-//                 email: {},
-//                 password: {},
-//             },
-
-//             async authorize(credentials) {
-//                 if (credentials == null) return null;
-
-//                 try {
-//                     const user = await userModel.findOne({email: credentials.email});
-//                     console.log({user})
-//                     if (user) {
-//                         const isMatch = await bcrypt.compare(
-//                             credentials.password,
-//                             user.password
-//                         );
-//                         if(isMatch) {
-//                             return user;
-//                         } else {
-//                             throw new Error('Email or password mismatch');
-//                         }
-//                     } else {
-//                         throw new Error('User not found');
-//                     }
-//                 } catch(error) {
-//                     throw new Error(error);
-//                 }
-//             }
-//         }),
+  
+  

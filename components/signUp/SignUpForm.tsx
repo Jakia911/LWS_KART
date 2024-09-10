@@ -11,23 +11,22 @@ const SignUpForm = () => {
     event.preventDefault();
     try {
       const formData = new FormData(event.currentTarget);
-      const fname = formData.get("fname") as string | null;
-      const lname = formData.get("lname") as string | null;
+      const name = formData.get("name") as string | null;
+
       const email = formData.get("email") as string | null;
       const password = formData.get("password") as string | null;
 
-      if (!fname || !lname || !email || !password) {
+      if (!name || !email || !password) {
         throw new Error("All fields are required");
       }
-
+      console.log(name, email);
       const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          fname,
-          lname,
+          name,
           email,
           password,
         }),

@@ -28,8 +28,8 @@ const LoginForm = () => {
   }
   return (
     <>
-      {error && <div className="text-xl text-red-500 text-center">{error}</div>}
-      <form action="#" method="post" onSubmit={handleSubmit}>
+      {/* {error && <div className="text-xl text-red-500 text-center">{error}</div>} */}
+      <form action="#" method="post">
         <div className="space-y-2">
           <div>
             <label className="text-gray-600 mb-2 block">Email address</label>
