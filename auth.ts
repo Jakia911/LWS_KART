@@ -1,7 +1,7 @@
-import NextAuth, { NextAuthOptions } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
-import { Adapter } from 'next-auth/adapters'
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
+import NextAuth, { NextAuthOptions } from "next-auth";
+import { Adapter } from 'next-auth/adapters';
+import GoogleProvider from "next-auth/providers/google";
 import mongoClientPromise from "./database/mongoClientPromise";
 
 // Define NextAuth options with TypeScript
@@ -20,15 +20,19 @@ const authOptions: NextAuthOptions = {
     ]
 };
 
-// Export handlers with proper typing
-export const {
-    handlers: { GET, POST },
-    auth,
-    signIn,
-    signOut,
-} = NextAuth(authOptions);
 
-export default authOptions;
+
+export const {
+   
+     auth,
+     signIn,
+     signOut,
+} = NextAuth(authOptions);
+ 
+const handler = NextAuth(authOptions);
+export { handler as GET, handler as POST };
+
+// export default authOptions;
 
 //  CredentialsProvider({
 //             credentials: {

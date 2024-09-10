@@ -1,4 +1,13 @@
+"use client";
+
+import { signIn } from "next-auth/react";
+
 const SocialLogin = () => {
+  const handleAuth = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    signIn("google", { callbackUrl: "http://localhost:3000/shop" });
+  };
+
   return (
     <div>
       <div className="mt-6 flex justify-center relative">
@@ -14,12 +23,12 @@ const SocialLogin = () => {
         >
           facebook
         </a>
-        <a
-          href="#"
+        <button
+          onClick={handleAuth}
           className="w-1/2 py-2 text-center text-white bg-red-600 rounded uppercase font-roboto font-medium text-sm hover:bg-red-500"
         >
           google
-        </a>
+        </button>
       </div>
     </div>
   );
