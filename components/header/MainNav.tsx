@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import bed2 from "../../public/images/icons/bed-2.svg";
 import bed from "../../public/images/icons/bed.svg";
 import office from "../../public/images/icons/office.svg";
@@ -109,12 +110,12 @@ const MainNav = () => {
                 Contact us
               </a>
             </div>
-            <a
-              href="pages/login.html"
+            <Link
+              href={"/login"}
               className="text-gray-200 hover:text-white transition"
             >
               Login
-            </a>
+            </Link>
           </div>
         </div>
       </nav>
