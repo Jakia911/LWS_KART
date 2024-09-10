@@ -1,12 +1,25 @@
+// Utility to replace _id with id in an array of objects
+export const replaceMongoIdInArray = (array: Array<{ _id: any }>): Array<Record<string, any>> => {
+  const mappedArray = array.map(item => ({
+    id: item._id.toString(),
+    ...item
+  })).map(({ _id, ...rest }) => rest);
 
+  return mappedArray;
+};
 
-// export const replaceMongoIdInArray = (array) => {
-//     const mappedArray = array.map(item => {
-//       return {
-//         id: item._id.toString(),
-//         ...item
-//       }
-//     }).map(({_id, ...rest}) => rest);
+// Utility to replace _id with id in a single object
+// export const replaceMongoIdInObject = (obj: { _id: any }): Record<string, any> => {
+//   const { _id, ...updatedObj } = { ...obj, id: obj._id.toString() };
+//   return updatedObj;
+// };
 
-//     return mappedArray;
-//   }
+// Check if a date is between two dates
+// export const isDateInbetween = (date: Date | string, from: Date | string, to: Date | string): boolean => {
+//   return new Date(date).getTime() >= new Date(from).getTime() && new Date(date).getTime() <= new Date(to).getTime();
+// };
+
+// Calculate day difference between two dates
+// export const getDayDifference = (from: Date | string, to: Date | string): number => {
+//   return (new Date(to).getTime() - new Date(from).getTime()) / (24 * 60 * 60 * 1000) + 1;
+// };

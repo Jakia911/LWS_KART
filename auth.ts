@@ -1,8 +1,12 @@
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
-import NextAuth, { NextAuthOptions } from "next-auth";
+import { compare } from "bcryptjs";
+import { ObjectId } from "mongodb";
+import NextAuth, { NextAuthOptions, User } from "next-auth";
 import { Adapter } from 'next-auth/adapters';
+import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import mongoClientPromise from "./database/mongoClientPromise";
+import { userModel } from "./models/user-model";
 
 // Define NextAuth options with TypeScript
 const authOptions: NextAuthOptions = {
@@ -12,6 +16,43 @@ const authOptions: NextAuthOptions = {
         strategy: 'jwt',
     },
     providers: [
+           CredentialsProvider({
+            credentials: {
+    email: {  },
+    password: {  },
+  },
+  async authorize(
+    credentials: Record<"email" | "password", string> | undefined
+  ): Promise<User | null> {
+    if (!credentials) {
+      return null;
+    }
+
+    try {
+      const user = await userModel.findOne({ email: credentials.email });
+      if (user) {
+        const isMatch = await compare(credentials.password, user.password);
+          if (isMatch) {
+          const userId: string = (user._id as ObjectId).toString();
+          return {
+    id: userId,
+    name: user.name,
+    email: user.email,
+    image: user.image,
+  };
+        } 
+        else {
+          throw new Error("Email or password mismatch");
+        }
+      } else {
+        throw new Error("User not found");
+      }
+    } catch (error) {
+      console.error("Authorization error:", error);
+      return null; // Return null if there's an error
+    }
+  },
+        }),
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID as string,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,

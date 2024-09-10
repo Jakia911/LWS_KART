@@ -1,6 +1,51 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
 const SignUpForm = () => {
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    try {
+      const formData = new FormData(event.currentTarget);
+      const fname = formData.get("fname") as string | null;
+      const lname = formData.get("lname") as string | null;
+      const email = formData.get("email") as string | null;
+      const password = formData.get("password") as string | null;
+
+      if (!fname || !lname || !email || !password) {
+        throw new Error("All fields are required");
+      }
+
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fname,
+          lname,
+          email,
+          password,
+        }),
+      });
+
+      if (res.status === 201) {
+        router.push("/login");
+      } else {
+        const data = await res.json();
+        throw new Error(data.message || "Registration failed");
+      }
+    } catch (error: any) {
+      setError(error.message || "An unexpected error occurred");
+    }
+  }
+
   return (
-    <form action="#" method="post">
+    <form action="#" method="post" onSubmit={handleSubmit}>
       <div className="space-y-2">
         <div>
           <label className="text-gray-600 mb-2 block">Full Name</label>

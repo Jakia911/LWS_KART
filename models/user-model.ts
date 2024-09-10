@@ -14,6 +14,16 @@ const userSchema = new Schema<IUser>({
   image: { required: false, type: String },
 });
 
+const getUserModel = (): Model<IUser> => {
+  // Check if the 'products' model exists, use it directly if it does
+  if (mongoose.models.users) {
+    return mongoose.model<IUser>('users');
+  } else {
+    // If it doesn't exist, register the new model
+    return mongoose.model<IUser>('users', userSchema);
+  }
+}
 
-export const userModel: Model<IUser> = mongoose.models.users ?? mongoose.model<IUser>("users", userSchema);
+// Export the model using the function
+export const userModel: Model<IUser> = getUserModel();
 
