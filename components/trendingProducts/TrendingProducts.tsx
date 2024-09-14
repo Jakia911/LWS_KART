@@ -8,6 +8,13 @@ const TrendingProducts = async () => {
   const trendingProducts = products.slice(0, 6);
   console.log(products);
 
+  // Define the expected structure of the request body
+  interface CartRequestBody {
+    userId: string;
+    productId: string;
+    quantity: number;
+  }
+
   return (
     <div className="container pb-16">
       <h2 className="text-2xl font-medium text-gray-800 uppercase mb-6">
@@ -81,12 +88,9 @@ const TrendingProducts = async () => {
                   <div className="text-xs text-gray-500 ml-3">(150)</div>
                 </div>
               </div>
-              <a
-                href="#"
-                className="block w-full py-1 text-center text-white bg-primary border border-primary rounded-b hover:bg-transparent hover:text-primary transition"
-              >
+              <button className="block w-full py-1 text-center text-white bg-primary border border-primary rounded-b hover:bg-transparent hover:text-primary transition">
                 Add to cart
-              </a>
+              </button>
             </div>
           </>
         ))}

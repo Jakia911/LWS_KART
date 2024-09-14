@@ -358,8 +358,6 @@ const ShopProducts = () => {
                 alt="product 1"
                 className="w-full"
                 src={prod6}
-                alt="product 1"
-                className="w-full"
                 width={500}
                 height={500}
               />
