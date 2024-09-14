@@ -32,18 +32,3 @@ const getProductModel = (): Model<IProduct> => {
 
 // Export the model using the function
 export const productModel: Model<IProduct> = getProductModel();
-
-// export const productModel = model<IProduct>('products', productSchema);
-// Create the Mongoose model for products
-// export const productModel: Model<IProduct> = mongoose.models.products ?? mongoose.model<IProduct>("products", productSchema);
-
-// const getProductModel = (): Model<IProduct> => {
-//   if (mongoose.models.products) {
-//     return mongoose.models.products as Model<IProduct>;
-//   } else {
-//     return mongoose.model<IProduct>('products', productSchema);
-//   }
-// }
-
-// // Export the model using the function
-// export const productModel: Model<IProduct> = getProductModel();

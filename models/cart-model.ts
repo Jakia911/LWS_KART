@@ -1,12 +1,8 @@
+import { CartItem } from "@/types/cart";
 import mongoose, { Document, Schema } from "mongoose";
 
 // Define the item structure in the cart
-interface CartItem {
-  productId: mongoose.Schema.Types.ObjectId;
-  quantity: number;
-  price: number;
-  image:string
-}
+
 
 // Define the Cart interface
 export interface ICart extends Document {
