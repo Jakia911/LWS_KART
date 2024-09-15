@@ -3,24 +3,24 @@ import { dbConnect } from "@/services/mongo";
 import { NextResponse } from "next/server";
 
 interface CartRequestBody{
-  id:string,
+  productId:string,
    name:string,
   price: number;
   image: string;
 }
 export const POST = async(request:Request):Promise<NextResponse> => {
   
-  const { id, name, price, image }: CartRequestBody = await request.json();
+  const { productId, name, price, image }: CartRequestBody = await request.json();
   await dbConnect();
   
   const newCart = {
-    id: id,
+    productId: productId,
     name:name,
     price: price,
     image:image
   }
 
-  console.log(newCart);
+  console.log("new cart data is",newCart);
 
   try {
     await cartModel.create(newCart)

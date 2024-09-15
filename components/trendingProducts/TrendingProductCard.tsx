@@ -1,5 +1,8 @@
+"use client";
+
 import { Product } from "@/types/product";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React from "react";
 import prod1 from "../../public/images/products/product1.jpg"; // Ensure this path is correct
 
@@ -8,6 +11,37 @@ interface ProductCardProps {
 }
 
 const TrendingProductCard: React.FC<ProductCardProps> = ({ prod }) => {
+  const router = useRouter();
+
+  const handleAddToCart = async () => {
+    const cartData = {
+      productId: prod?.id,
+      name: prod?.title,
+      price: prod?.price,
+      image: prod?.image,
+    };
+
+    try {
+      const res = await fetch("/api/cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(cartData),
+      });
+
+      if (res.status === 201) {
+        router.push("/cartDetailsPage");
+      } else {
+        const data = await res.json();
+        console.log(data);
+        throw new Error(data.message || "Card adding failed");
+      }
+    } catch (err: any) {
+      console.log(err.message);
+    }
+  };
+
   return (
     <div
       className="bg-white shadow rounded overflow-hidden group"
@@ -74,7 +108,10 @@ const TrendingProductCard: React.FC<ProductCardProps> = ({ prod }) => {
           <div className="text-xs text-gray-500 ml-3">(150)</div>
         </div>
       </div>
-      <button className="block w-full py-1 text-center text-white bg-primary border border-primary rounded-b hover:bg-transparent hover:text-primary transition">
+      <button
+        onClick={handleAddToCart}
+        className="block w-full py-1 text-center text-white bg-primary border border-primary rounded-b hover:bg-transparent hover:text-primary transition"
+      >
         Add to cart
       </button>
     </div>
