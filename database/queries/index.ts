@@ -28,3 +28,10 @@ export const getCartForUser = async (userId: ObjectId): Promise<ICart | null> =>
   }
 };
 
+
+
+// add product to the cart
+export const addToCart = () => {
+  
+}
+

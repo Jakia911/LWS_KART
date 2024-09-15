@@ -10,6 +10,8 @@ export interface ICart extends Document {
   items: CartItem[];
 }
 
+
+
 // Create the schema
 const cartSchema: Schema<ICart> = new Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },

@@ -5,10 +5,12 @@ import { NextResponse } from "next/server";
 
 // Define the structure of the request body
 interface UserRequestBody {
-  name:string,
+  name: string;
   email: string;
   password: string;
+ 
 }
+
 
 export const POST = async (request: Request): Promise<NextResponse> => {
   const { name, email, password }: UserRequestBody = await request.json();
