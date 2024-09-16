@@ -8,57 +8,18 @@ import GoogleProvider from "next-auth/providers/google";
 import mongoClientPromise from "./database/mongoClientPromise";
 import { userModel } from "./models/user-model";
 // Define NextAuth options with TypeScript
-const authOptions: NextAuthOptions = {
-    adapter: MongoDBAdapter(mongoClientPromise, { databaseName: process.env.ENVIRONMENT }) as Adapter,
-   
-    session: {
-        strategy: 'jwt',
-    },
+ export const {
+    handlers: { GET, POST },
+    auth,
+    signIn,
+    signOut,
+} = NextAuthOptions = {
+    adapter: MongoDBAdapter(mongoClientPromise, {databaseName: process.env.ENVIRONMENT }),
+    
+        
   providers: [
       
-  CredentialsProvider({
-            credentials: {
-                email: {},
-                password: {},
-            },
- async authorize(
-    
-  credentials: Record<"email" | "password", string> | undefined
-  ): Promise<User | null> {
-    if (!credentials) {
-      return null;
-    }
 
-                try {
-                    const user = await userModel.findOne({email: credentials.email});
-                    console.log({user})
-                    if (user) {
-                        const isMatch = await bcrypt.compare(
-                            credentials.password,
-                            user.password
-                        );
-                      if (isMatch) {
-                        const userId: string = (user._id as ObjectId).toString();
-                        return {
-                          id: userId,
-                          name: user.name,
-                          email: user.email,
-                          image: user.image,
-                        };
-                      }
-                        
-                        else {
-                            throw new Error('Email or password mismatch');
-                        }
-                    } else {
-                        throw new Error('User not found');
-                    }
-                } catch (error) {
-      console.error("Authorization error:", error);
-      return null; // Return null if there's an error
-    }
-            }
-        }),
           
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -68,8 +29,8 @@ const authOptions: NextAuthOptions = {
     ]
 };
 
-const handler = NextAuth(authOptions);
-export { handler as GET, handler as POST };
+// const handler = NextAuth(authOptions);
+// export { handler as GET, handler as POST };
 
 // export const {
    
@@ -79,44 +40,46 @@ export { handler as GET, handler as POST };
 // } = NextAuth(authOptions);
  
 
-  
-  // CredentialsProvider({
-  //           credentials: {
-  //   email: {  },
-  //   password: {  },
-  // },
-  // async authorize(
+//    CredentialsProvider({
+//             credentials: {
+//                 email: {},
+//                 password: {},
+//             },
+//  async authorize(
     
-  // credentials: Record<"email" | "password", string> | undefined
-  // ): Promise<User | null> {
-  //   if (!credentials) {
-  //     return null;
-  //   }
+//   credentials: Record<"email" | "password", string> | undefined
+//   ): Promise<User | null> {
+//     if (!credentials) {
+//       return null;
+//     }
 
-  //   try {
-  //     const user = await userModel.findOne({ email: credentials.email });
-  //     if (user) {
-  //       const isMatch = await compare(credentials.password, user.password);
-  //         if (isMatch) {
-  //         const userId: string = (user._id as ObjectId).toString();
-  //         return {
-  //   id: userId,
-  //   name: user.name,
-  //   email: user.email,
-  //   image: user.image,
-  // };
-  //       } 
-  //       else {
-  //         throw new Error("Email or password mismatch");
-  //       }
-  //     } else {
-  //       throw new Error("User not found");
-  //     }
-  //   } catch (error) {
-  //     console.error("Authorization error:", error);
-  //     return null; // Return null if there's an error
-  //   }
-  // },
-  //       }),
-  
-  
+//                 try {
+//                     const user = await userModel.findOne({email: credentials.email});
+//                     console.log({user})
+//                     if (user) {
+//                         const isMatch = await bcrypt.compare(
+//                             credentials.password,
+//                             user.password
+//                         );
+//                       if (isMatch) {
+//                         const userId: string = (user._id as ObjectId).toString();
+//                         return {
+//                           id: userId,
+//                           name: user.name,
+//                           email: user.email,
+//                           image: user.image,
+//                         };
+//                       }
+                        
+//                         else {
+//                             throw new Error('Email or password mismatch');
+//                         }
+//                     } else {
+//                         throw new Error('User not found');
+//                     }
+//                 } catch (error) {
+//       console.error("Authorization error:", error);
+//       return null; // Return null if there's an error
+//     }
+//             }
+//         }),

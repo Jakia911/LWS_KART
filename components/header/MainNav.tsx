@@ -1,3 +1,6 @@
+"use client";
+
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import bed2 from "../../public/images/icons/bed-2.svg";
@@ -8,6 +11,7 @@ import sofa from "../../public/images/icons/sofa.svg";
 import terrace from "../../public/images/icons/terrace.svg";
 
 const MainNav = () => {
+  const { data: session } = useSession();
   return (
     <div>
       <nav className="bg-gray-800">
@@ -110,12 +114,18 @@ const MainNav = () => {
                 Contact us
               </a>
             </div>
-            <Link
-              href={"/login"}
-              className="text-gray-200 hover:text-white transition"
-            >
-              Login
-            </Link>
+            {!session ? (
+              <Link
+                href={"/login"}
+                className="text-gray-200 hover:text-white transition"
+              >
+                Login
+              </Link>
+            ) : (
+              <a href="#" className="text-gray-200 hover:text-white transition">
+                Sign Out
+              </a>
+            )}
           </div>
         </div>
       </nav>
