@@ -1,6 +1,7 @@
-"use client";
+"use Server";
 
-import { useSession } from "next-auth/react";
+import { authOptions } from "@/auth";
+import { getServerSession } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 import bed2 from "../../public/images/icons/bed-2.svg";
@@ -10,8 +11,8 @@ import cafe from "../../public/images/icons/outdoor-cafe.svg";
 import sofa from "../../public/images/icons/sofa.svg";
 import terrace from "../../public/images/icons/terrace.svg";
 
-const MainNav = () => {
-  const { data: session } = useSession();
+const MainNav = async () => {
+  const session = await getServerSession(authOptions);
   return (
     <div>
       <nav className="bg-gray-800">
