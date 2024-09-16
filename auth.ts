@@ -68,17 +68,17 @@ const authOptions: NextAuthOptions = {
     ]
 };
 
-
-
-export const {
-   
-     auth,
-     signIn,
-     signOut,
-} = NextAuth(authOptions);
- 
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
+
+// export const {
+   
+//      auth,
+//      signIn,
+//      signOut,
+// } = NextAuth(authOptions);
+ 
+
   
   // CredentialsProvider({
   //           credentials: {

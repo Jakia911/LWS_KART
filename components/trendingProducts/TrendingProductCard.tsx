@@ -1,8 +1,5 @@
-"use client";
-
 import { Product } from "@/types/product";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import React from "react";
 import prod1 from "../../public/images/products/product1.jpg"; // Ensure this path is correct
 
@@ -10,8 +7,12 @@ interface ProductCardProps {
   prod: Product;
 }
 
-const TrendingProductCard: React.FC<ProductCardProps> = ({ prod }) => {
-  const router = useRouter();
+const TrendingProductCard: React.FC<ProductCardProps> = async ({ prod }) => {
+  // const router = useRouter();
+
+  //get the user
+  // const session = await auth();
+  // console.log(session);
 
   const handleAddToCart = async () => {
     const cartData = {
@@ -31,7 +32,7 @@ const TrendingProductCard: React.FC<ProductCardProps> = ({ prod }) => {
       });
 
       if (res.status === 201) {
-        router.push("/cartDetailsPage");
+        // router.push("/cartDetailsPage");
       } else {
         const data = await res.json();
         console.log(data);

@@ -1,31 +1,50 @@
 "use client";
 
-import { login } from "@/app/actions";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+// import { login } from "@/app/actions";
+// import { useRouter } from "next/navigation";
+// import { useState } from "react";
 
 const LoginForm = () => {
-  const [error, setError] = useState<string>("");
-  const router = useRouter();
+  //   const [error, setError] = useState<string>("");
+  //   const router = useRouter();
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  //   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  //     event.preventDefault();
 
-    try {
-      const formData = new FormData(event.currentTarget);
+  //     try {
+  //       const formData = new FormData(event.currentTarget);
 
-      // Assuming login function is properly typed
-      const response = await login(formData);
+  //       // Assuming login function is properly typed
+  //       const response = await login(formData);
 
-      if (response.error) {
-        setError(response.error as string);
-      } else {
-        router.push("/shop");
-      }
-    } catch (err: any) {
-      setError(err.message || "An unexpected error occurred");
+  //       if (response.error) {
+  //         setError(response.error as string);
+  //       } else {
+  //         router.push("/shop");
+  //       }
+  //     } catch (err: any) {
+  //       setError(err.message || "An unexpected error occurred");
+  //     }
+  //   }
+
+  // new login data
+  const loginUser = async (formData: FormData) => {
+    const email = formData.get("email");
+    const password = formData.get("password");
+
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      // Handle successful login (redirect, etc.)
+    } else {
+      // Handle error
+      console.error(data.error);
     }
-  }
+  };
   return (
     <>
       {/* {error && <div className="text-xl text-red-500 text-center">{error}</div>} */}
