@@ -1,24 +1,24 @@
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
-import NextAuth from "next-auth";
-import { Adapter } from 'next-auth/adapters';
+import NextAuth, { NextAuthOptions } from "next-auth";
+import { Adapter } from "next-auth/adapters";
 import GoogleProvider from "next-auth/providers/google";
 import mongoClientPromise from "./database/mongoClientPromise";
-// Define NextAuth options with TypeScript
-export const 
-   authOptions = NextAuth({
-    adapter: MongoDBAdapter(mongoClientPromise, { databaseName: process.env.ENVIRONMENT }) as Adapter,
-    session: {
-        strategy: 'jwt',
-    },
-    providers: [
-       
-        GoogleProvider({
-           clientId: process.env.GOOGLE_CLIENT_ID as string,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-          }),
-    ]
-})
 
+// Define NextAuth options
+export const authOptions: NextAuthOptions = {
+  adapter: MongoDBAdapter(mongoClientPromise, { databaseName: process.env.ENVIRONMENT }) as Adapter,
+  session: {
+    strategy: 'jwt',
+  },
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+    }),
+  ],
+};
+
+// Export the NextAuth handler using authOptions
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
 

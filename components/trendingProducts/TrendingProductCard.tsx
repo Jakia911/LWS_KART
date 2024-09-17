@@ -1,3 +1,4 @@
+"use client";
 import { Product } from "@/types/product";
 import Image from "next/image";
 import React from "react";

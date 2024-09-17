@@ -1,7 +1,6 @@
-"use Server";
+"use Client";
 
-import { authOptions } from "@/auth";
-import { getServerSession } from "next-auth";
+import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import bed2 from "../../public/images/icons/bed-2.svg";
@@ -12,7 +11,13 @@ import sofa from "../../public/images/icons/sofa.svg";
 import terrace from "../../public/images/icons/terrace.svg";
 
 const MainNav = async () => {
-  const session = await getServerSession(authOptions);
+  // const session = await getServerSession(authOptions);
+  // console.log(session);
+
+  const handleLogOut = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    signOut({ callbackUrl: "http://localhost:3000/login" });
+  };
   return (
     <div>
       <nav className="bg-gray-800">
@@ -115,7 +120,19 @@ const MainNav = async () => {
                 Contact us
               </a>
             </div>
-            {!session ? (
+            <Link
+              href={"/login"}
+              className="text-gray-200 hover:text-white transition"
+            >
+              Login
+            </Link>
+            <button
+              onClick={handleLogOut}
+              className="text-gray-200 hover:text-white transition"
+            >
+              Sign Out
+            </button>
+            {/* {!session ? (
               <Link
                 href={"/login"}
                 className="text-gray-200 hover:text-white transition"
@@ -126,7 +143,7 @@ const MainNav = async () => {
               <a href="#" className="text-gray-200 hover:text-white transition">
                 Sign Out
               </a>
-            )}
+            )} */}
           </div>
         </div>
       </nav>
