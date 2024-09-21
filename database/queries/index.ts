@@ -3,6 +3,9 @@ import { Product } from "@/types/product";
 import { replaceMongoIdInArray } from "@/utils/data-util";
 import { productModel } from "../../models/product-model";
 
+import { ObjectId } from "mongoose";
+
+import { cartModel, ICart } from "@/models/cart-model";
 
 
 export const getAllProducts = async (): Promise<Product[]> => {
@@ -13,14 +16,11 @@ export const getAllProducts = async (): Promise<Product[]> => {
 };
 
 
-import { ObjectId } from "mongoose";
-
-import { cartModel, ICart } from "@/models/cart-model";
  // Import Cart interface
 
 export const getCartForUser = async (userId: ObjectId): Promise<ICart | null> => {
   try {
-    const cart = await cartModel.findOne({ user: userId }).populate("items.productId");
+    const cart = await cartModel.findOne().populate("items.productId");
     return cart;
   } catch (error) {
     console.error("Error fetching cart:", error);

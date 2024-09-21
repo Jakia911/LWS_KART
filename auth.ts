@@ -6,10 +6,11 @@ import mongoClientPromise from "./database/mongoClientPromise";
 
 // Define NextAuth options
 export const authOptions: NextAuthOptions = {
-  adapter: MongoDBAdapter(mongoClientPromise, { databaseName: process.env.ENVIRONMENT }) as Adapter,
-  session: {
-    strategy: 'jwt',
-  },
+    secret: process.env.NEXT_AUTH_SECRET,
+  adapter: MongoDBAdapter(mongoClientPromise, {databaseName: process.env.ENVIRONMENT }) as Adapter,
+    session: {
+        strategy: 'jwt',
+    },
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,

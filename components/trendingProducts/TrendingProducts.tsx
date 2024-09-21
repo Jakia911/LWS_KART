@@ -1,5 +1,7 @@
+import { getServerSession } from "next-auth";
 import { getAllProducts } from "../../database/queries/index";
 
+import { authOptions } from "@/auth";
 import TrendingProductCard from "./TrendingProductCard";
 
 const TrendingProducts = async () => {
@@ -7,6 +9,10 @@ const TrendingProducts = async () => {
 
   const trendingProducts = products.slice(0, 6);
   console.log(products);
+
+  const session = await getServerSession(authOptions);
+  console.log("trending product data", session?.user);
+  const userName: string | null | undefined = session?.user?.name;
 
   // Define the expected structure of the request body
 
@@ -17,7 +23,7 @@ const TrendingProducts = async () => {
       </h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
         {trendingProducts.map((prod) => (
-          <TrendingProductCard prod={prod} />
+          <TrendingProductCard prod={prod} userName={userName} />
         ))}
       </div>
     </div>

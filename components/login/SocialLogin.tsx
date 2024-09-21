@@ -3,8 +3,7 @@
 import { signIn } from "next-auth/react";
 
 const SocialLogin = () => {
-  const handleAuth = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+  const handleAuth = () => {
     signIn("google", { callbackUrl: "http://localhost:3000/shop" });
   };
 

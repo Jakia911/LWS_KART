@@ -8,15 +8,25 @@ interface ProductCardProps {
   prod: Product;
 }
 
-const TrendingProductCard: React.FC<ProductCardProps> = async ({ prod }) => {
+interface TrendingProductCardProps {
+  prod: Product;
+  userName?: string | null | undefined;
+}
+const TrendingProductCard: React.FC<TrendingProductCardProps> = async ({
+  prod,
+  userName,
+}) => {
   // const router = useRouter();
 
   //get the user
   // const session = await auth();
   // console.log(session);
 
+  console.log("product card user name", userName);
+
   const handleAddToCart = async () => {
     const cartData = {
+      userName: userName,
       productId: prod?.id,
       name: prod?.title,
       price: prod?.price,
