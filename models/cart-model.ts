@@ -5,7 +5,8 @@ import mongoose, { Model, Schema } from "mongoose";
 
 
 // Define the Cart interface
- export interface ICart {
+export interface ICart {
+   userName:string | null | undefined; 
   productId: mongoose.Schema.Types.ObjectId;
  name:string,
   price: number;
@@ -16,6 +17,10 @@ import mongoose, { Model, Schema } from "mongoose";
 
 // Create the schema
 const cartSchema = new Schema<ICart>({
+   userName: {
+    type: String,
+    default: null  // Allows `null` explicitly
+  },
    productId: { type:String ,required: true},
     name:{ type: String, required: true },
       price: { type: Number, required: true },
