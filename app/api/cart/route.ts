@@ -3,6 +3,7 @@ import { dbConnect } from "@/services/mongo";
 import { NextResponse } from "next/server";
 
 interface CartRequestBody{
+  userName:string,
   productId:string,
    name:string,
   price: number;
@@ -10,10 +11,11 @@ interface CartRequestBody{
 }
 export const POST = async(request:Request):Promise<NextResponse> => {
   
-  const { productId, name, price, image }: CartRequestBody = await request.json();
+  const { productId, name, price, image,userName }: CartRequestBody = await request.json();
   await dbConnect();
   
   const newCart = {
+     userName: userName,
     productId: productId,
     name:name,
     price: price,

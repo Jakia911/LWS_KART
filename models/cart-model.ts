@@ -19,7 +19,8 @@ export interface ICart {
 const cartSchema = new Schema<ICart>({
    userName: {
     type: String,
-    default: null  // Allows `null` explicitly
+     required: true
+     // Allows `null` explicitly
   },
    productId: { type:String ,required: true},
     name:{ type: String, required: true },

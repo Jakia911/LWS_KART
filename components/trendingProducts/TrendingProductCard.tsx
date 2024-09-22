@@ -32,7 +32,7 @@ const TrendingProductCard: React.FC<TrendingProductCardProps> = async ({
       price: prod?.price,
       image: prod?.image,
     };
-
+    console.log(cartData);
     try {
       const res = await fetch("/api/cart", {
         method: "POST",
@@ -46,7 +46,7 @@ const TrendingProductCard: React.FC<TrendingProductCardProps> = async ({
         // router.push("/cartDetailsPage");
       } else {
         const data = await res.json();
-        console.log(data);
+        console.log("card data is", data);
         throw new Error(data.message || "Card adding failed");
       }
     } catch (err: any) {
