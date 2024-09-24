@@ -4,10 +4,6 @@ import Image from "next/image";
 import React from "react";
 import prod1 from "../../public/images/products/product1.jpg"; // Ensure this path is correct
 
-interface ProductCardProps {
-  prod: Product;
-}
-
 interface TrendingProductCardProps {
   prod: Product;
   userName?: string | null | undefined;
@@ -25,21 +21,21 @@ const TrendingProductCard: React.FC<TrendingProductCardProps> = async ({
   console.log("product card user name", userName);
 
   const handleAddToCart = async () => {
-    const cartData = {
+    const wishlistData = {
       userName: userName,
       productId: prod?.id,
       name: prod?.title,
       price: prod?.price,
       image: prod?.image,
     };
-    console.log(cartData);
+    console.log(wishlistData);
     try {
       const res = await fetch("/api/cart", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(cartData),
+        body: JSON.stringify(wishlistData),
       });
 
       if (res.status === 201) {
@@ -54,6 +50,35 @@ const TrendingProductCard: React.FC<TrendingProductCardProps> = async ({
     }
   };
 
+  const handleAddToWishlist = async () => {
+    const wishlistData = {
+      userName: userName,
+      productId: prod?.id,
+      name: prod?.title,
+      price: prod?.price,
+      image: prod?.image,
+    };
+    console.log(wishlistData);
+    try {
+      const res = await fetch("/api/wishlist", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(wishlistData),
+      });
+
+      if (res.status === 201) {
+        // router.push("/cartDetailsPage");
+      } else {
+        const data = await res.json();
+        console.log("Wishlist data is", data);
+        throw new Error(data.message || "Wishlist adding failed");
+      }
+    } catch (err: any) {
+      console.log(err.message);
+    }
+  };
   return (
     <div
       className="bg-white shadow rounded overflow-hidden group"
@@ -88,11 +113,27 @@ const TrendingProductCard: React.FC<TrendingProductCardProps> = async ({
         </div>
       </div>
       <div className="pt-4 pb-3 px-4">
-        <a href="#">
-          <h4 className="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
-            {prod.title}
-          </h4>
-        </a>
+        <div className="flex justify-between items-center">
+          <a href="#">
+            <h4 className="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
+              {prod.title}
+            </h4>
+          </a>
+          <button onClick={handleAddToWishlist}>
+            <svg
+              stroke="#FD3D57"
+              fill="#FD3D57"
+              stroke-width="0"
+              version="1.1"
+              viewBox="0 0 16 16"
+              height="1.5em"
+              width="1.5em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M11.8 1c-1.682 0-3.129 1.368-3.799 2.797-0.671-1.429-2.118-2.797-3.8-2.797-2.318 0-4.2 1.882-4.2 4.2 0 4.716 4.758 5.953 8 10.616 3.065-4.634 8-6.050 8-10.616 0-2.319-1.882-4.2-4.2-4.2z"></path>
+            </svg>
+          </button>
+        </div>
         <div className="flex items-baseline mb-1 space-x-2">
           <p className="text-xl text-primary font-semibold">
             ${prod.price || 0}
