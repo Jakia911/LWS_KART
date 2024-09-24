@@ -1,8 +1,9 @@
-import { cartModel } from "@/models/cart-model";
+
+import { wishlistModel } from "@/models/wishlist-model";
 import { dbConnect } from "@/services/mongo";
 import { NextResponse } from "next/server";
 
-interface CartRequestBody{
+interface WishlistRequestBody{
   userName:string,
   productId:string,
    name:string,
@@ -11,10 +12,10 @@ interface CartRequestBody{
 }
 export const POST = async(request:Request):Promise<NextResponse> => {
   
-  const { productId, name, price, image,userName }: CartRequestBody = await request.json();
+  const { productId, name, price, image,userName }: WishlistRequestBody = await request.json();
   await dbConnect();
   
-  const newCart = {
+  const newWishlist = {
      userName: userName,
     productId: productId,
     name:name,
@@ -22,11 +23,11 @@ export const POST = async(request:Request):Promise<NextResponse> => {
     image:image
   }
 
-  console.log("new cart data is",newCart);
+  console.log("new wishlist data is",newWishlist);
 
   try {
-    await cartModel.create(newCart)
-     return new NextResponse('cart has been create', {
+    await wishlistModel.create(newWishlist)
+     return new NextResponse('Wishlist has been added', {
       status:201
     })
   }
