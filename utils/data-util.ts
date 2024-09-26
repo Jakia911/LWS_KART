@@ -8,6 +8,14 @@ export const replaceMongoIdInArray = (array: Array<{ _id: any }>): Array<Record<
   return mappedArray;
 };
 
+
+  
+
+export const replaceMongoIdInObject = <T extends { _id: any }>(obj: T): Omit<T, '_id'> & { id: string } => {
+  const { _id, ...updatedObj } = obj;
+  return { ...updatedObj, id: _id.toString() };
+}
+
 // Utility to replace _id with id in a single object
 // export const replaceMongoIdInObject = (obj: { _id: any }): Record<string, any> => {
 //   const { _id, ...updatedObj } = { ...obj, id: obj._id.toString() };

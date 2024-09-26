@@ -1,9 +1,11 @@
 
 import { Product } from "@/types/product";
 import { replaceMongoIdInArray } from "@/utils/data-util";
+
+import { ObjectId } from 'mongodb';
+
 import { productModel } from "../../models/product-model";
 
-import { ObjectId } from "mongoose";
 
 import { cartModel, ICart } from "@/models/cart-model";
 
@@ -14,6 +16,45 @@ export const getAllProducts = async (): Promise<Product[]> => {
  
    return replaceMongoIdInArray(products) as Product[];
 };
+
+
+
+
+// get product by id
+
+
+
+
+
+interface IProduct {
+  _id: ObjectId;
+  name: string;
+  price: number;
+  description: string;
+    category: string;
+    image?: string;
+    trending?: boolean;
+    topArrival?: boolean;
+  // Add any other fields you have in your Product schema
+}
+
+export const replaceMongoIdInObject = <T extends { _id: ObjectId }>(obj: T): Omit<T, '_id'> & { id: string } => {
+    const { _id, ...updatedObj } = obj;
+    return { ...updatedObj, id: _id.toString() };
+};
+
+
+export const getProductById = async (productId: string): Promise<Omit<IProduct, '_id'> & { id: string } | null> => {
+    const product = await productModel.findById(productId).lean<Omit<IProduct, '_id'> & { _id: ObjectId }>();
+
+    // If product is null, return null
+    if (!product) {
+        return null;
+    }
+
+    return replaceMongoIdInObject(product);
+};
+
 
 
  // Import Cart interface
