@@ -1,4 +1,6 @@
+import { IProduct } from "@/types/product";
 import Image from "next/image";
+import { FC } from "react";
 import product1 from "../../public/images/products/product1.jpg";
 import product2 from "../../public/images/products/product2.jpg";
 import product3 from "../../public/images/products/product3.jpg";
@@ -6,7 +8,15 @@ import product4 from "../../public/images/products/product4.jpg";
 import product5 from "../../public/images/products/product5.jpg";
 import product6 from "../../public/images/products/product6.jpg";
 
-const ProductDetails = () => {
+interface ProductDetailsProps {
+  product:
+    | (Omit<IProduct, "_id"> & {
+        id: string;
+      })
+    | null;
+}
+
+const ProductDetails: FC<ProductDetailsProps> = () => {
   return (
     <div className="container grid grid-cols-2 gap-6">
       <div>

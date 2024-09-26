@@ -1,4 +1,11 @@
-const ProductDescription = () => {
+import { IProduct } from "@/types/product";
+import { FC } from "react";
+
+interface ProductDescriptionProps {
+  product: (Omit<IProduct, "_id"> & { id: string }) | null;
+}
+
+const ProductDescription: FC<ProductDescriptionProps> = () => {
   return (
     <div className="container pb-16">
       <h3 className="border-b border-gray-200 font-roboto text-gray-800 pb-3 font-medium">

@@ -1,5 +1,5 @@
 
-import { Product } from "@/types/product";
+import { IProduct, Product } from "@/types/product";
 import { replaceMongoIdInArray } from "@/utils/data-util";
 
 import { ObjectId } from 'mongodb';
@@ -26,17 +26,7 @@ export const getAllProducts = async (): Promise<Product[]> => {
 
 
 
-interface IProduct {
-  _id: ObjectId;
-  name: string;
-  price: number;
-  description: string;
-    category: string;
-    image?: string;
-    trending?: boolean;
-    topArrival?: boolean;
-  // Add any other fields you have in your Product schema
-}
+
 
 export const replaceMongoIdInObject = <T extends { _id: ObjectId }>(obj: T): Omit<T, '_id'> & { id: string } => {
     const { _id, ...updatedObj } = obj;

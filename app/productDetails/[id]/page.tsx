@@ -1,7 +1,17 @@
 import ProductDescription from "@/components/ProductDetails/ProductDescription";
 import ProductDetails from "@/components/ProductDetails/ProductDetails";
+import { getProductById } from "@/database/queries";
+import { IProduct, Product } from "@/types/product";
 
-const ProductDetailsPage = () => {
+interface ProductDetailsPageProps {
+  params: {
+    id: string;
+  };
+}
+const ProductDetailsPage = async ({
+  params: { id },
+}: ProductDetailsPageProps) => {
+  const productInfo = await getProductById(id);
   return (
     <>
       <div className="container py-4 flex items-center gap-3">
@@ -15,8 +25,8 @@ const ProductDetailsPage = () => {
       </div>
 
       {/* product details page */}
-      <ProductDetails />
-      <ProductDescription />
+      <ProductDetails product={productInfo} />
+      <ProductDescription product={productInfo} />
     </>
   );
 };
