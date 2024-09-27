@@ -2,7 +2,6 @@ import { authOptions } from "@/auth";
 import ProductDescription from "@/components/ProductDetails/ProductDescription";
 import ProductDetails from "@/components/ProductDetails/ProductDetails";
 import { getProductById } from "@/database/queries";
-import { IProduct, Product } from "@/types/product";
 import { getServerSession } from "next-auth";
 
 interface ProductDetailsPageProps {
@@ -14,11 +13,14 @@ const ProductDetailsPage = async ({
   params: { id },
 }: ProductDetailsPageProps) => {
   //fetch user session data
+
+  const productInfo = await getProductById(id);
+
+  //user session data
+
   const session = await getServerSession(authOptions);
   console.log("trending product data", session?.user);
   const userName: string | null | undefined = session?.user?.name;
-
-  const productInfo = await getProductById(id);
   return (
     <>
       <div className="container py-4 flex items-center gap-3">
@@ -33,7 +35,7 @@ const ProductDetailsPage = async ({
 
       {/* product details page */}
       <ProductDetails product={productInfo} userName={userName} />
-      <ProductDescription product={productInfo} userName={userName} />
+      <ProductDescription product={productInfo} />
     </>
   );
 };

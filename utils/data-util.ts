@@ -1,3 +1,6 @@
+import { authOptions } from "@/auth";
+import { getServerSession } from "next-auth";
+
 // Utility to replace _id with id in an array of objects
 export const replaceMongoIdInArray = (array: Array<{ _id: any }>): Array<Record<string, any>> => {
   const mappedArray = array.map(item => ({
@@ -14,6 +17,14 @@ export const replaceMongoIdInArray = (array: Array<{ _id: any }>): Array<Record<
 export const replaceMongoIdInObject = <T extends { _id: any }>(obj: T): Omit<T, '_id'> & { id: string } => {
   const { _id, ...updatedObj } = obj;
   return { ...updatedObj, id: _id.toString() };
+}
+
+export const userData =async () => {
+   const session = await getServerSession(authOptions);
+  console.log("trending product data", session?.user);
+  const userName: string | null | undefined = session?.user?.name;
+
+  return userName;
 }
 
 // Utility to replace _id with id in a single object

@@ -1,3 +1,5 @@
+"use client";
+
 import { IProduct } from "@/types/product";
 import Image from "next/image";
 import { FC } from "react";
@@ -52,7 +54,6 @@ const ProductDetails: FC<ProductDetailsProps> = ({ product, userName }) => {
   // handle add to wishlist
   const handleAddToWishlist = async () => {
     const wishlistData = {
-      userName: userName,
       productId: product?.id,
       name: product?.name,
       price: product?.price,
