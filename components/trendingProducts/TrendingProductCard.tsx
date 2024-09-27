@@ -1,6 +1,7 @@
 "use client";
 import { Product } from "@/types/product";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 import prod1 from "../../public/images/products/product1.jpg"; // Ensure this path is correct
 
@@ -114,11 +115,11 @@ const TrendingProductCard: React.FC<TrendingProductCardProps> = async ({
       </div>
       <div className="pt-4 pb-3 px-4">
         <div className="flex justify-between items-center">
-          <a href="#">
+          <Link href={`/productDetails/${prod?.id}`}>
             <h4 className="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
               {prod.title}
             </h4>
-          </a>
+          </Link>
           <button onClick={handleAddToWishlist}>
             <svg
               stroke="#FD3D57"

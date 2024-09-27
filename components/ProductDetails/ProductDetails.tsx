@@ -14,9 +14,72 @@ interface ProductDetailsProps {
         id: string;
       })
     | null;
+  userName?: string | null | undefined;
 }
 
-const ProductDetails: FC<ProductDetailsProps> = () => {
+const ProductDetails: FC<ProductDetailsProps> = ({ product, userName }) => {
+  // handle add to cart
+  const handleAddToCart = async () => {
+    const wishlistData = {
+      userName: userName,
+      productId: product?.id,
+      name: product?.name,
+      price: product?.price,
+      image: product?.image,
+    };
+    console.log(wishlistData);
+    try {
+      const res = await fetch("/api/cart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(wishlistData),
+      });
+
+      if (res.status === 201) {
+        // router.push("/cartDetailsPage");
+      } else {
+        const data = await res.json();
+        console.log("card data is", data);
+        throw new Error(data.message || "Card adding failed");
+      }
+    } catch (err: any) {
+      console.log(err.message);
+    }
+  };
+
+  // handle add to wishlist
+  const handleAddToWishlist = async () => {
+    const wishlistData = {
+      userName: userName,
+      productId: product?.id,
+      name: product?.name,
+      price: product?.price,
+      image: product?.image,
+    };
+    console.log(wishlistData);
+    try {
+      const res = await fetch("/api/wishlist", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(wishlistData),
+      });
+
+      if (res.status === 201) {
+        // router.push("/cartDetailsPage");
+      } else {
+        const data = await res.json();
+        console.log("Wishlist data is", data);
+        throw new Error(data.message || "Wishlist adding failed");
+      }
+    } catch (err: any) {
+      console.log(err.message);
+    }
+  };
+
   return (
     <div className="container grid grid-cols-2 gap-6">
       <div>
@@ -67,9 +130,7 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
       </div>
 
       <div>
-        <h2 className="text-3xl font-medium uppercase mb-2">
-          Italian L Shape Sofa
-        </h2>
+        <h2 className="text-3xl font-medium uppercase mb-2">{product?.name}</h2>
         <div className="flex items-center mb-4">
           <div className="flex gap-1 text-sm text-yellow-400">
             <span>
@@ -101,7 +162,7 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
           </p>
           <p className="space-x-2">
             <span className="text-gray-800 font-semibold">Category: </span>
-            <span className="text-gray-600">Sofa</span>
+            <span className="text-gray-600"> {product?.category}</span>
           </p>
           <p className="space-x-2">
             <span className="text-gray-800 font-semibold">SKU: </span>
@@ -109,16 +170,14 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
           </p>
         </div>
         <div className="flex items-baseline mb-1 space-x-2 font-roboto mt-4">
-          <p className="text-xl text-primary font-semibold">$45.00</p>
+          <p className="text-xl text-primary font-semibold">
+            {" "}
+            {product?.price}
+          </p>
           <p className="text-base text-gray-400 line-through">$55.00</p>
         </div>
 
-        <p className="mt-4 text-gray-600">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos eius eum
-          reprehenderit dolore vel mollitia optio consequatur hic asperiores
-          inventore suscipit, velit consequuntur, voluptate doloremque iure
-          necessitatibus adipisci magnam porro.
-        </p>
+        <p className="mt-4 text-gray-600">{product?.description}</p>
 
         <div className="mt-4">
           <h3 className="text-sm text-gray-800 uppercase mb-1">Quantity</h3>
@@ -136,18 +195,18 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
         </div>
 
         <div className="mt-6 flex gap-3 border-b border-gray-200 pb-5 pt-5">
-          <a
-            href="#"
+          <button
+            onClick={handleAddToCart}
             className="bg-primary border border-primary text-white px-8 py-2 font-medium rounded uppercase flex items-center gap-2 hover:bg-transparent hover:text-primary transition"
           >
             <i className="fa-solid fa-bag-shopping"></i> Add to cart
-          </a>
-          <a
-            href="#"
+          </button>
+          <button
+            onClick={handleAddToWishlist}
             className="border border-gray-300 text-gray-600 px-8 py-2 font-medium rounded uppercase flex items-center gap-2 hover:text-primary transition"
           >
             <i className="fa-solid fa-heart"></i> Wishlist
-          </a>
+          </button>
         </div>
 
         <div className="flex gap-3 mt-4">

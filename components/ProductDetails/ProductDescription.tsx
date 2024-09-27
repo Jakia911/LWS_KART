@@ -3,9 +3,13 @@ import { FC } from "react";
 
 interface ProductDescriptionProps {
   product: (Omit<IProduct, "_id"> & { id: string }) | null;
+  userName?: string | null | undefined;
 }
 
-const ProductDescription: FC<ProductDescriptionProps> = () => {
+const ProductDescription: FC<ProductDescriptionProps> = ({
+  product,
+  userName,
+}) => {
   return (
     <div className="container pb-16">
       <h3 className="border-b border-gray-200 font-roboto text-gray-800 pb-3 font-medium">
