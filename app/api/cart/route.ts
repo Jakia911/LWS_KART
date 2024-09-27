@@ -1,9 +1,9 @@
 
-import { wishlistModel } from "@/models/wishlist-model";
+import { cartModel } from "@/models/cart-model";
 import { dbConnect } from "@/services/mongo";
 import { NextResponse } from "next/server";
 
-interface WishlistRequestBody{
+interface CartRequestBody{
   userName:string,
   productId:string,
    name:string,
@@ -12,10 +12,10 @@ interface WishlistRequestBody{
 }
 export const POST = async(request:Request):Promise<NextResponse> => {
   
-  const { productId, name, price, image,userName }: WishlistRequestBody = await request.json();
+  const { productId, name, price, image,userName }: CartRequestBody = await request.json();
   await dbConnect();
   
-  const newWishlist = {
+  const newCart = {
      userName: userName,
     productId: productId,
     name:name,
@@ -23,11 +23,17 @@ export const POST = async(request:Request):Promise<NextResponse> => {
     image:image
   }
 
-  console.log("new wishlist data is",newWishlist);
+  console.log("new cart data is",newCart);
 
   try {
-    await wishlistModel.create(newWishlist)
-     return new NextResponse('Wishlist has been added', {
+
+    const existingProduct = await (cartModel.findOne({ userName: userName, productId: productId }))
+    if (existingProduct) {
+      return new NextResponse('Product already exists in the',{status:401}) 
+    }
+
+    await cartModel.create(newCart)
+     return new NextResponse('cart has been added', {
       status:201
     })
   }
