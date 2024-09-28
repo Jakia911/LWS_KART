@@ -2,7 +2,6 @@ import MainNav from "@/components/header/MainNav";
 import TopNav from "@/components/header/TopNav";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { CartProvider } from "./context/CartContext";
 // import AuthProvider from "./context/AuthProvider";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -22,9 +21,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <TopNav />
         <MainNav />
-        <CartProvider>
-          <main>{children}</main>
-        </CartProvider>
+        <main>{children}</main>
       </body>
     </html>
   );
