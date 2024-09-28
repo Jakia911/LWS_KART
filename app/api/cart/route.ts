@@ -29,7 +29,7 @@ export const POST = async(request:Request):Promise<NextResponse> => {
 
     const existingProduct = await (cartModel.findOne({ userName: userName, productId: productId }))
     if (existingProduct) {
-      return new NextResponse('Product already exists in the',{status:401}) 
+      return new NextResponse('Product already exists in the cart',{status:401}) 
     }
 
     await cartModel.create(newCart)

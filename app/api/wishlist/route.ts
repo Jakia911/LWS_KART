@@ -25,7 +25,11 @@ export const POST = async(request:Request):Promise<NextResponse> => {
 
   console.log("new wishlist data is",newWishlist);
 
-  try {
+    try {
+       const existingProduct = await (wishlistModel.findOne({ userName: userName, productId: productId }))
+    if (existingProduct) {
+      return new NextResponse('Product already exists in the wishlist',{status:401}) 
+    }
     await wishlistModel.create(newWishlist)
      return new NextResponse('Wishlist has been added', {
       status:201

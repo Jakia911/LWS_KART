@@ -85,7 +85,7 @@ const ProductDetails: FC<ProductDetailsProps> = ({ product, userName }) => {
     <div className="container grid grid-cols-2 gap-6">
       <div>
         <Image
-          src={product1}
+          src={product?.image ? product?.image : product1}
           alt="product"
           className="w-full"
           width={500}
