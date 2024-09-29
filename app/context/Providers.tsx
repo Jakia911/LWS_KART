@@ -1,7 +1,7 @@
 "use client";
 
 import { ThemeProvider } from "next-themes";
-
+import "../../styles/global.css";
 import { CartProvider } from "./CartContext";
 
 interface ProvidersProps {
