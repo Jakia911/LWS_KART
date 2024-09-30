@@ -40,7 +40,7 @@ export const WishlistProvider = ({
   }, [wishlist]);
 
   // Add a new product to the cart
-  const addToWishlist = (product: WishlistItem) => {
+  const addToWishlist = async (product: WishlistItem) => {
     setWishlist((prevWishlist) => {
       const existingProduct = prevWishlist.find(
         (item) => item.id === product.id
@@ -54,6 +54,27 @@ export const WishlistProvider = ({
       }
       return [...prevWishlist, { ...product, wQuantity: 1 }];
     });
+
+    // Send updated cart data to the backend for persistence
+    try {
+      const response = await fetch(`/api/wishlist/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(product), // Send product data to the backend
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to add product to the wishlist");
+      }
+
+      // Optionally, handle the backend response here
+      const data = await response.json();
+      console.log("Product added to wishlist ", data);
+    } catch (error) {
+      console.error("Error adding product to the wishlist:", error);
+    }
   };
 
   // Increment the wQuantity of an existing product in the cart
