@@ -74,11 +74,42 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Increment the quantity of an existing product in the cart
   const incrementCartItem = (id: string) => {
+    // Update local state first
     setCart((prevCart) =>
       prevCart.map((item) =>
         item.id === id ? { ...item, quantity: item.quantity + 1 } : item
       )
     );
+
+    const updatedItem = cart.find((item) => item.id === id);
+
+    if (updatedItem) {
+      // save the updated cart data to the backend for persistence
+      fetch(`/api/cart/`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          productId: updatedItem.id,
+          quantity: updatedItem.quantity + 1,
+        }),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(
+              "Failed to update product quantity in the database"
+            );
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log("Product quantity updated in the database", data);
+        })
+        .catch((error) => {
+          console.error("Error updating product quantity in the cart:", error);
+        });
+    }
   };
 
   // Get the total number of items in the cart
