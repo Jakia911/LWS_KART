@@ -51,4 +51,4 @@ export const POST = async(request:Request):Promise<NextResponse> => {
 
 // for updating data
 
-export const UPDATE = async()
+// export const UPDATE = async()

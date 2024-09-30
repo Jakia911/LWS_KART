@@ -21,65 +21,6 @@ const TrendingProductCard: React.FC<TrendingProductCardProps> = async ({
 
   console.log("product card user name", userName);
 
-  const handleAddToCart = async () => {
-    const wishlistData = {
-      userName: userName,
-      productId: prod?.id,
-      name: prod?.title,
-      price: prod?.price,
-      image: prod?.image,
-    };
-    console.log(wishlistData);
-    try {
-      const res = await fetch("/api/cart", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(wishlistData),
-      });
-
-      if (res.status === 201) {
-        // router.push("/cartDetailsPage");
-      } else {
-        const data = await res.json();
-        console.log("card data is", data);
-        throw new Error(data.message || "Card adding failed");
-      }
-    } catch (err: any) {
-      console.log(err.message);
-    }
-  };
-
-  const handleAddToWishlist = async () => {
-    const wishlistData = {
-      userName: userName,
-      productId: prod?.id,
-      name: prod?.title,
-      price: prod?.price,
-      image: prod?.image,
-    };
-    console.log(wishlistData);
-    try {
-      const res = await fetch("/api/wishlist", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(wishlistData),
-      });
-
-      if (res.status === 201) {
-        // router.push("/cartDetailsPage");
-      } else {
-        const data = await res.json();
-        console.log("Wishlist data is", data);
-        throw new Error(data.message || "Wishlist adding failed");
-      }
-    } catch (err: any) {
-      console.log(err.message);
-    }
-  };
   return (
     <div
       className="bg-white shadow rounded overflow-hidden group"

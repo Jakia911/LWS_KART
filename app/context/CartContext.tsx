@@ -10,7 +10,7 @@ interface CartItem {
 
 interface CartContextProps {
   cart: CartItem[];
-  addToCart: (product: CartItem) => void;
+  addToCart: (product: CartItem) => Promise<void>;
   incrementCartItem: (id: string) => void;
   getTotalItems: () => number;
 }
@@ -36,7 +36,8 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   }, [cart]);
 
   // Add a new product to the cart
-  const addToCart = (product: CartItem) => {
+  const addToCart = async (product: CartItem): Promise<void> => {
+    // Update local state first
     setCart((prevCart) => {
       const existingProduct = prevCart.find((item) => item.id === product.id);
       if (existingProduct) {
@@ -48,6 +49,27 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
       }
       return [...prevCart, { ...product, quantity: 1 }];
     });
+
+    // Send updated cart data to the backend for persistence
+    try {
+      const response = await fetch(`/api/cart/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(product), // Send product data to the backend
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to add product to the database");
+      }
+
+      // Optionally, handle the backend response here
+      const data = await response.json();
+      console.log("Product added to cart in database", data);
+    } catch (error) {
+      console.error("Error adding product to the cart:", error);
+    }
   };
 
   // Increment the quantity of an existing product in the cart
