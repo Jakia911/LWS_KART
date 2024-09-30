@@ -10,6 +10,8 @@ interface CartRequestBody{
   price: number;
   image: string;
 }
+
+// for post data
 export const POST = async(request:Request):Promise<NextResponse> => {
   
   const { productId, name, price, image,userName }: CartRequestBody = await request.json();
@@ -45,3 +47,8 @@ export const POST = async(request:Request):Promise<NextResponse> => {
 
 
 }
+
+
+// for updating data
+
+export const UPDATE = async()
