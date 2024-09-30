@@ -55,26 +55,26 @@ export const WishlistProvider = ({
       return [...prevWishlist, { ...product, wQuantity: 1 }];
     });
 
-    // Send updated cart data to the backend for persistence
-    try {
-      const response = await fetch(`/api/wishlist/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(product), // Send product data to the backend
+    // Send updated wishlist data to the backend for persistence
+    fetch(`/api/wishlist/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(product),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to add product to the database");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Product added to wishlist in database", data);
+      })
+      .catch((error) => {
+        console.error("Error adding product to the wishlist:", error);
       });
-
-      if (!response.ok) {
-        throw new Error("Failed to add product to the wishlist");
-      }
-
-      // Optionally, handle the backend response here
-      const data = await response.json();
-      console.log("Product added to wishlist ", data);
-    } catch (error) {
-      console.error("Error adding product to the wishlist:", error);
-    }
   };
 
   // Increment the wQuantity of an existing product in the cart

@@ -10,7 +10,7 @@ interface CartItem {
 
 interface CartContextProps {
   cart: CartItem[];
-  addToCart: (product: CartItem) => Promise<void>;
+  addToCart: (product: CartItem) => void;
   incrementCartItem: (id: string) => void;
   getTotalItems: () => number;
 }
@@ -36,7 +36,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   }, [cart]);
 
   // Add a new product to the cart
-  const addToCart = async (product: CartItem): Promise<void> => {
+  const addToCart = (product: CartItem) => {
     // Update local state first
     setCart((prevCart) => {
       const existingProduct = prevCart.find((item) => item.id === product.id);
@@ -51,25 +51,25 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     });
 
     // Send updated cart data to the backend for persistence
-    try {
-      const response = await fetch(`/api/cart/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(product), // Send product data to the backend
+    fetch(`/api/cart/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(product),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to add product to the database");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Product added to cart in database", data);
+      })
+      .catch((error) => {
+        console.error("Error adding product to the cart:", error);
       });
-
-      if (!response.ok) {
-        throw new Error("Failed to add product to the database");
-      }
-
-      // Optionally, handle the backend response here
-      const data = await response.json();
-      console.log("Product added to cart in database", data);
-    } catch (error) {
-      console.error("Error adding product to the cart:", error);
-    }
   };
 
   // Increment the quantity of an existing product in the cart
