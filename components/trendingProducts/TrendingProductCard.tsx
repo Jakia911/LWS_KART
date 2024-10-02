@@ -1,5 +1,6 @@
 "use client";
 import { useCart } from "@/app/context/CartContext";
+import { CartItem } from "@/types/cart";
 import { Product } from "@/types/product";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,46 +16,46 @@ const TrendingProductCard: React.FC<TrendingProductCardProps> = ({
   prod,
   userName,
 }) => {
+  const product: CartItem = {
+    userName: "JohnDoe",
+    id: "prod1",
+    name: "Sample Product",
+    price: 50,
+    quantity: 1,
+  };
   //retrieve  from
   const { addToCart } = useCart();
 
   // const { addToWishlist } = useWishlist();
 
   //handle add to card
-  const handleAddToCart = (prod: Product) => {
-    addToCart({
-      userName: userName,
-      id: prod.id || "",
-      name: prod.title, // Map 'title' to 'name'
-      price: prod.price || 0,
-      quantity: 1,
-    });
-
-    // Send data to the database
-    fetch(`/api/cart/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: prod.id || "",
-        name: prod.title,
-        price: prod.price || 0,
-        quantity: 1,
-      }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to add product to the database");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Product added to cart in the database", data);
-      })
-      .catch((error) => {
-        console.error("Error adding product to the cart:", error);
-      });
+  const handleAddToCart = () => {
+    addToCart(product);
+    // // Send data to the database
+    // fetch(`/api/cart/`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     id: prod.id || "",
+    //     name: prod.title,
+    //     price: prod.price || 0,
+    //     quantity: 1,
+    //   }),
+    // })
+    //   .then((response) => {
+    //     if (!response.ok) {
+    //       throw new Error("Failed to add product to the database");
+    //     }
+    //     return response.json();
+    //   })
+    //   .then((data) => {
+    //     console.log("Product added to cart in the database", data);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error adding product to the cart:", error);
+    //   });
   };
 
   //handle add to wishlist
@@ -144,7 +145,7 @@ const TrendingProductCard: React.FC<TrendingProductCardProps> = ({
         </div>
       </div>
       <button
-        onClick={() => handleAddToCart(prod)}
+        onClick={() => handleAddToCart()}
         className="block w-full py-1 text-center text-white bg-primary border border-primary rounded-b hover:bg-transparent hover:text-primary transition"
       >
         Add to cart
