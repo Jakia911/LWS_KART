@@ -11,6 +11,9 @@ interface ProvidersProps {
 export function Providers({ children }: ProvidersProps) {
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      {/* <WishlistProvider>
+     
+      </WishlistProvider> */}
       <CartProvider>{children}</CartProvider>
     </ThemeProvider>
   );

@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 // Define types for cart items and cart context
 interface CartItem {
+  userName?: string | null | undefined;
   id: string;
   name: string;
   price: number;
