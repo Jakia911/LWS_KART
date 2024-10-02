@@ -10,16 +10,12 @@ interface TrendingProductCardProps {
   prod: Product;
   userName?: string | null | undefined;
 }
-const TrendingProductCard: React.FC<TrendingProductCardProps> = async ({
+
+const TrendingProductCard: React.FC<TrendingProductCardProps> = ({
   prod,
   userName,
 }) => {
   const { addToCart } = useCart();
-  // const router = useRouter();
-
-  //get the user
-  // const session = await auth();
-  // console.log(session);
 
   const handleAddToCart = (prod: Product) => {
     addToCart({
@@ -28,6 +24,32 @@ const TrendingProductCard: React.FC<TrendingProductCardProps> = async ({
       price: prod.price || 0,
       quantity: 1,
     });
+
+    // Send data to the database
+    fetch(`/api/cart/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: prod.id || "",
+        name: prod.title,
+        price: prod.price || 0,
+        quantity: 1,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to add product to the database");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Product added to cart in the database", data);
+      })
+      .catch((error) => {
+        console.error("Error adding product to the cart:", error);
+      });
   };
 
   console.log("product card user name", userName);
@@ -114,7 +136,10 @@ const TrendingProductCard: React.FC<TrendingProductCardProps> = async ({
           <div className="text-xs text-gray-500 ml-3">(150)</div>
         </div>
       </div>
-      <button className="block w-full py-1 text-center text-white bg-primary border border-primary rounded-b hover:bg-transparent hover:text-primary transition">
+      <button
+        onClick={() => handleAddToCart(prod)}
+        className="block w-full py-1 text-center text-white bg-primary border border-primary rounded-b hover:bg-transparent hover:text-primary transition"
+      >
         Add to cart
       </button>
     </div>

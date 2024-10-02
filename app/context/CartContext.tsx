@@ -1,3 +1,5 @@
+"use client";
+
 import { createContext, useContext, useEffect, useState } from "react";
 
 // Define types for cart items and cart context
@@ -51,25 +53,25 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     });
 
     // Send updated cart data to the backend for persistence
-    fetch(`/api/cart/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(product),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to add product to the database");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Product added to cart in database", data);
-      })
-      .catch((error) => {
-        console.error("Error adding product to the cart:", error);
-      });
+    // fetch(`/api/cart/`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(product),
+    // })
+    //   .then((response) => {
+    //     if (!response.ok) {
+    //       throw new Error("Failed to add product to the database");
+    //     }
+    //     return response.json();
+    //   })
+    //   .then((data) => {
+    //     console.log("Product added to cart in database", data);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error adding product to the cart:", error);
+    //   });
   };
 
   // Increment the quantity of an existing product in the cart
