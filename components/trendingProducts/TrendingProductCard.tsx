@@ -1,4 +1,5 @@
 "use client";
+import { useCart } from "@/app/context/CartContext";
 import { Product } from "@/types/product";
 import Image from "next/image";
 import Link from "next/link";
@@ -13,11 +14,21 @@ const TrendingProductCard: React.FC<TrendingProductCardProps> = async ({
   prod,
   userName,
 }) => {
+  const { addToCart } = useCart();
   // const router = useRouter();
 
   //get the user
   // const session = await auth();
   // console.log(session);
+
+  const handleAddToCart = (prod: Product) => {
+    addToCart({
+      id: prod.id || "",
+      name: prod.title, // Map 'title' to 'name'
+      price: prod.price || 0,
+      quantity: 1,
+    });
+  };
 
   console.log("product card user name", userName);
 
@@ -61,7 +72,7 @@ const TrendingProductCard: React.FC<TrendingProductCardProps> = async ({
               {prod.title}
             </h4>
           </Link>
-          <button>
+          <button onClick={() => handleAddToCart(prod)}>
             <svg
               stroke="#FD3D57"
               fill="#FD3D57"
