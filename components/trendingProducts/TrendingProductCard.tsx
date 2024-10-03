@@ -1,4 +1,5 @@
 "use client";
+import { useCart } from "@/app/context/CartContext";
 import { CartItem } from "@/types/cart";
 import { Product } from "@/types/product";
 import Image from "next/image";
@@ -24,7 +25,7 @@ const TrendingProductCard: React.FC<TrendingProductCardProps> = ({
   //   quantity: 1,
   // };
   //retrieve  from
-  // const { addToCart } = useCart();
+  const { addToCart } = useCart();
 
   // const { addToWishlist } = useWishlist();
 
@@ -38,35 +39,9 @@ const TrendingProductCard: React.FC<TrendingProductCardProps> = ({
       price: prod?.price,
       quantity: 1,
     };
-
-    // const product = {
-    //   productId: "12345", // Ensure this is not undefined or null
-    //   name: "Sample Product",
-    //   price: 100,
-    //   image: "sample-product-image.jpg",
-    //   userName: "johnDoe", // Ensure this is passed correctly
-    // };
-
+    console.log(product);
+    addToCart(product);
     // // Send data to the database
-    fetch(`/api/cart/`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(product),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Failed to add product to the database");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Product added to cart in the database", data);
-      })
-      .catch((error) => {
-        console.error("Error adding product to the cart:", error);
-      });
   };
 
   //handle add to wishlist

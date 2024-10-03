@@ -3,7 +3,7 @@ import mongoose, { Model, Schema } from "mongoose";
 // Define the Cart interface
 export interface ICart {
   userName: string | null | undefined; 
-  productId: mongoose.Schema.Types.ObjectId; // Use ObjectId if you're storing references to other collections
+  productId:String; // Use ObjectId if you're storing references to other collections
   name: string;
   price: number;
   image: string;
@@ -15,7 +15,7 @@ const cartSchema = new Schema<ICart>({
     type: String,
     // If you want it required, but it allows null, handle it in logic elsewhere
   },
-  productId: { type: mongoose.Schema.Types.ObjectId,  }, // ObjectId type for references
+  productId: { type: String,  }, // ObjectId type for references
   name: { type: String,  },
   price: { type: Number,  },
   image: { type: String,  },

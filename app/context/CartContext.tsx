@@ -64,7 +64,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         return response.json();
       })
       .then((data) => {
-        console.log("Product added to cart in database", data);
+        console.log("Product added to cart in the database", data);
       })
       .catch((error) => {
         console.error("Error adding product to the cart:", error);
@@ -76,11 +76,11 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     // Update local state first
     setCart((prevCart) =>
       prevCart.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+        item.productId === id ? { ...item, quantity: item.quantity + 1 } : item
       )
     );
 
-    const updatedItem = cart.find((item) => item.id === id);
+    const updatedItem = cart.find((item) => item.productId === id);
 
     if (updatedItem) {
       // save the updated cart data to the backend for persistence
@@ -90,7 +90,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          productId: updatedItem.id,
+          productId: updatedItem.productId,
           quantity: updatedItem.quantity + 1,
         }),
       })
