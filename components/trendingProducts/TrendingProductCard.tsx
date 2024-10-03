@@ -1,5 +1,4 @@
 "use client";
-import { useCart } from "@/app/context/CartContext";
 import { CartItem } from "@/types/cart";
 import { Product } from "@/types/product";
 import Image from "next/image";
@@ -16,46 +15,58 @@ const TrendingProductCard: React.FC<TrendingProductCardProps> = ({
   prod,
   userName,
 }) => {
-  const product: CartItem = {
-    userName: "JohnDoe",
-    id: "prod1",
-    name: "Sample Product",
-    price: 50,
-    quantity: 1,
-  };
+  // const product: CartItem = {
+  //   userName: userName,
+  //   productId: prod?.id,
+  //   image: prod?.image,
+  //   title: prod?.title,
+  //   price: prod?.price,
+  //   quantity: 1,
+  // };
   //retrieve  from
-  const { addToCart } = useCart();
+  // const { addToCart } = useCart();
 
   // const { addToWishlist } = useWishlist();
 
   //handle add to card
   const handleAddToCart = () => {
-    addToCart(product);
+    const product: CartItem = {
+      userName: userName,
+      productId: prod?.id,
+      image: prod?.image,
+      name: prod?.title,
+      price: prod?.price,
+      quantity: 1,
+    };
+
+    // const product = {
+    //   productId: "12345", // Ensure this is not undefined or null
+    //   name: "Sample Product",
+    //   price: 100,
+    //   image: "sample-product-image.jpg",
+    //   userName: "johnDoe", // Ensure this is passed correctly
+    // };
+
     // // Send data to the database
-    // fetch(`/api/cart/`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     id: prod.id || "",
-    //     name: prod.title,
-    //     price: prod.price || 0,
-    //     quantity: 1,
-    //   }),
-    // })
-    //   .then((response) => {
-    //     if (!response.ok) {
-    //       throw new Error("Failed to add product to the database");
-    //     }
-    //     return response.json();
-    //   })
-    //   .then((data) => {
-    //     console.log("Product added to cart in the database", data);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error adding product to the cart:", error);
-    //   });
+    fetch(`/api/cart/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(product),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to add product to the database");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Product added to cart in the database", data);
+      })
+      .catch((error) => {
+        console.error("Error adding product to the cart:", error);
+      });
   };
 
   //handle add to wishlist

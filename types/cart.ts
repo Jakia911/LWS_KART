@@ -12,11 +12,12 @@ export interface CartRequestBody{
   price: number;
   image: string;
 }
-
+ 
 export interface CartItem {
   userName?: string | null | undefined;
-  id: string;
+ productId : string | undefined;
   name: string;
-  price: number;
+  price: number | undefined;
+  image: string | undefined;
   quantity: number;
 }
