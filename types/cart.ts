@@ -14,10 +14,10 @@ export interface CartRequestBody{
 }
  
 export interface CartItem {
-  userName?: string | null | undefined;
+ userName?: string | null | undefined;
  productId : string | undefined;
   name: string;
   price: number | undefined;
   image: string | undefined;
   quantity: number;
-}
+} 

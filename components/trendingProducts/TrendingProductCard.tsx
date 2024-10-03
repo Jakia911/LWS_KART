@@ -1,7 +1,9 @@
 "use client";
 import { useCart } from "@/app/context/CartContext";
+import { useWishlist } from "@/app/context/WishlistContext";
 import { CartItem } from "@/types/cart";
 import { Product } from "@/types/product";
+import { WishlistItem } from "@/types/wishList";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -27,7 +29,7 @@ const TrendingProductCard: React.FC<TrendingProductCardProps> = ({
   //retrieve  from
   const { addToCart } = useCart();
 
-  // const { addToWishlist } = useWishlist();
+  const { addToWishlist } = useWishlist();
 
   //handle add to card
   const handleAddToCart = () => {
@@ -45,6 +47,19 @@ const TrendingProductCard: React.FC<TrendingProductCardProps> = ({
   };
 
   //handle add to wishlist
+
+  const handleAddToWishlist = () => {
+    const product: WishlistItem = {
+      userName: userName,
+      productId: prod?.id,
+      image: prod?.image,
+      name: prod?.title,
+      price: prod?.price,
+      wQuantity: 1,
+    };
+    console.log(product);
+    addToWishlist(product);
+  };
 
   console.log("product card user name", userName);
 

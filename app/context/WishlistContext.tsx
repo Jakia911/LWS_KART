@@ -1,11 +1,12 @@
+import { WishlistItem } from "@/types/wishList";
 import { createContext, useContext, useEffect, useState } from "react";
 
-interface WishlistItem {
-  id: string;
-  name: string;
-  price: number;
-  wQuantity: number;
-}
+// interface WishlistItem {
+//   id: string;
+//   name: string;
+//   price: number;
+//   wQuantity: number;
+// }
 
 interface WishlistContextProps {
   wishlist: WishlistItem[];
@@ -43,11 +44,11 @@ export const WishlistProvider = ({
   const addToWishlist = async (product: WishlistItem) => {
     setWishlist((prevWishlist) => {
       const existingProduct = prevWishlist.find(
-        (item) => item.id === product.id
+        (item) => item.productId === product.productId
       );
       if (existingProduct) {
         return prevWishlist.map((item) =>
-          item.id === product.id
+          item.productId === product.productId
             ? { ...item, wQuantity: item.wQuantity + 1 }
             : item
         );
@@ -60,7 +61,9 @@ export const WishlistProvider = ({
   const incrementWishlistItem = (id: string) => {
     setWishlist((prevWishlist) =>
       prevWishlist.map((item) =>
-        item.id === id ? { ...item, wQuantity: item.wQuantity + 1 } : item
+        item.productId === id
+          ? { ...item, wQuantity: item.wQuantity + 1 }
+          : item
       )
     );
   };
