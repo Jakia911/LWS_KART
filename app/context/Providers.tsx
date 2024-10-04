@@ -3,6 +3,7 @@
 import { ThemeProvider } from "next-themes";
 import "../../styles/global.css";
 import { CartProvider } from "./CartContext";
+import { WishlistProvider } from "./WishlistContext";
 
 interface ProvidersProps {
   children: React.ReactNode;
@@ -11,10 +12,9 @@ interface ProvidersProps {
 export function Providers({ children }: ProvidersProps) {
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      {/* <WishlistProvider>
-     
-      </WishlistProvider> */}
-      <CartProvider>{children}</CartProvider>
+      <WishlistProvider>
+        <CartProvider>{children}</CartProvider>
+      </WishlistProvider>
     </ThemeProvider>
   );
 }

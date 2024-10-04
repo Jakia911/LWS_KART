@@ -1,9 +1,12 @@
 
 
 export interface UpdateCartQuantityRequest {
-  productId: string;
-  quantity: number;
-  userName: string;
+ userName:string,
+  productId:string,
+   name:string,
+  price: number;
+  image: string;
+  quantity:number
 }
 export interface CartRequestBody{
   userName:string,
@@ -11,6 +14,7 @@ export interface CartRequestBody{
    name:string,
   price: number;
   image: string;
+  quantity:number
 }
  
 export interface CartItem {

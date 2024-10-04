@@ -43,12 +43,13 @@ const TrendingProductCard: React.FC<TrendingProductCardProps> = ({
     };
     console.log(product);
     addToCart(product);
-    // // Send data to the database
   };
 
   //handle add to wishlist
 
   const handleAddToWishlist = () => {
+    console.log("clicked");
+
     const product: WishlistItem = {
       userName: userName,
       productId: prod?.id,
@@ -103,8 +104,9 @@ const TrendingProductCard: React.FC<TrendingProductCardProps> = ({
               {prod.title}
             </h4>
           </Link>
-          <button>
-            <svg
+          <button onClick={() => handleAddToWishlist()}>
+            wishlist
+            {/* <svg
               stroke="#FD3D57"
               fill="#FD3D57"
               stroke-width="0"
@@ -115,7 +117,7 @@ const TrendingProductCard: React.FC<TrendingProductCardProps> = ({
               xmlns="http://www.w3.org/2000/svg"
             >
               <path d="M11.8 1c-1.682 0-3.129 1.368-3.799 2.797-0.671-1.429-2.118-2.797-3.8-2.797-2.318 0-4.2 1.882-4.2 4.2 0 4.716 4.758 5.953 8 10.616 3.065-4.634 8-6.050 8-10.616 0-2.319-1.882-4.2-4.2-4.2z"></path>
-            </svg>
+            </svg> */}
           </button>
         </div>
         <div className="flex items-baseline mb-1 space-x-2">

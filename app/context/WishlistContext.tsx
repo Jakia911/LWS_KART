@@ -41,7 +41,7 @@ export const WishlistProvider = ({
   }, [wishlist]);
 
   // Add a new product to the cart
-  const addToWishlist = async (product: WishlistItem) => {
+  const addToWishlist = (product: WishlistItem) => {
     setWishlist((prevWishlist) => {
       const existingProduct = prevWishlist.find(
         (item) => item.productId === product.productId
@@ -55,6 +55,27 @@ export const WishlistProvider = ({
       }
       return [...prevWishlist, { ...product, wQuantity: 1 }];
     });
+    console.log(product);
+    //send data to the database
+    fetch(`/api/wishlist/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(product),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to add product to the database");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Product added to wishlist in the database", data);
+      })
+      .catch((error) => {
+        console.error("Error adding product to the wishlist:", error);
+      });
   };
 
   // Increment the wQuantity of an existing product in the cart

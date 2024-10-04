@@ -7,10 +7,10 @@ import { NextResponse } from "next/server";
 export const POST = async (request: Request): Promise<NextResponse> => {
   try {
     // Parse the request body
-    const { productId, name, price, image, userName }: CartRequestBody = await request.json();
+    const { productId, name, price, image, userName,quantity }: CartRequestBody = await request.json();
 
     // Validate required fields
-    if (!productId || !name || !price || (userName === undefined || userName === null)) {
+    if (!productId || !name || !price || (userName === undefined || userName === null || !quantity)) {
   return NextResponse.json({ message: 'Missing required fields' }, { status: 400 });
 }
 
@@ -32,6 +32,7 @@ export const POST = async (request: Request): Promise<NextResponse> => {
       name,
       price,
       image,
+      quantity
     };
 
     await cartModel.create(newCart);

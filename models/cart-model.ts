@@ -7,6 +7,7 @@ export interface ICart {
   name: string;
   price: number;
   image: string;
+  quantity:number
 }
 
 // Create the schema
@@ -18,7 +19,8 @@ const cartSchema = new Schema<ICart>({
   productId: { type: String,  }, // ObjectId type for references
   name: { type: String,  },
   price: { type: Number,  },
-  image: { type: String,  },
+  image: { type: String, },
+  quantity:{ type: Number  }
 });
 
 // Get or create the Cart model
