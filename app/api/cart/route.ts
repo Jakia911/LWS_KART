@@ -43,3 +43,34 @@ export const POST = async (request: Request): Promise<NextResponse> => {
     return NextResponse.json({ message: 'Failed to add product to the cart', error: err.message }, { status: 500 });
   }
 };
+
+
+//get cart data
+
+
+
+
+// GET: Fetch cart data by username
+export const GET = async (request: Request): Promise<NextResponse> => {
+  try {
+    // Get the username from the query parameters
+    const { searchParams } = new URL(request.url);
+    const userName = searchParams.get('userName');
+    
+    // Ensure username is provided
+    if (!userName) {
+      return NextResponse.json({ message: 'Username is required' }, { status: 400 });
+    }
+
+    await dbConnect(); // Ensure DB connection
+
+    // Find all cart items by username
+    const cartItems = await cartModel.find({ userName });
+
+    // Return the cart items
+    return NextResponse.json({ cartItems }, { status: 200 });
+  } catch (error: any) {
+    console.error('Error fetching cart data:', error.message);
+    return NextResponse.json({ message: 'Failed to fetch cart data', error: error.message }, { status: 500 });
+  }
+};
