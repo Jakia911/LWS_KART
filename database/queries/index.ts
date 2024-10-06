@@ -47,7 +47,7 @@ export const getProductById = async (productId: string): Promise<Omit<IProduct, 
 
 
 
- // Import Cart interface
+
 
 export const getCartForUser = async (userId: ObjectId): Promise<ICart | null> => {
   try {
@@ -60,9 +60,38 @@ export const getCartForUser = async (userId: ObjectId): Promise<ICart | null> =>
 };
 
 
+// fetch  Cart by username
+ 
+// Fetch cart data for a user
 
-// add product to the cart
-export const addToCart = () => {
-  
+ interface username {
+ userName?: string | null | undefined;
+ 
+}  
+
+interface CartDataResponse {
+  cartItems: any[]; // Define the item structure if known, for now assuming `any`
+  message?: string;  // Optional message field for error handling
 }
+export const fetchCartData = async (userName:username) => {
+  try {
+    const response = await fetch(`/api/cart?userName=${userName}`);
+    const data:CartDataResponse = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(data.message || 'Failed to fetch cart data');
+    }
+
+    console.log('Cart data:', data.cartItems);
+  } catch (error) {
+    console.error('Error fetching cart data:', error);
+  }
+};
+
+// Example usage
+
+
+
+
+
 
