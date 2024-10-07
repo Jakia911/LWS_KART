@@ -1,7 +1,13 @@
+import { authOptions } from "@/auth";
+import { getServerSession } from "next-auth";
 import Image from "next/image";
 import logo from "../../public/images/logo.svg";
+import CartTotal from "./CartTotal";
 
-const TopNav = () => {
+const TopNav = async () => {
+  const session = await getServerSession(authOptions);
+  console.log("trending product data", session?.user);
+  const userName: string | null | undefined = session?.user?.name;
   return (
     <div>
       <header className="py-4 shadow-sm bg-white">
@@ -43,13 +49,7 @@ const TopNav = () => {
               href="#"
               className="text-center text-gray-700 hover:text-primary transition relative"
             >
-              <div className="text-2xl">
-                <i className="fa-solid fa-bag-shopping"></i>
-              </div>
-              <div className="text-xs leading-3">Cart</div>
-              <div className="absolute -right-3 -top-1 w-5 h-5 rounded-full flex items-center justify-center bg-primary text-white text-xs">
-                2
-              </div>
+              <CartTotal userName={userName} />
             </a>
             <a
               href="#"

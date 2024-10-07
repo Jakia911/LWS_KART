@@ -1,23 +1,52 @@
 import { useEffect, useState } from "react";
 
-export const useCartQuantity = (userName) => {
-  const [totalQuantity, setTotalQuantity] = useState(0);
+// Define the interface for CartItem
+interface CartItem {
+  quantity: number;
+  // You can add more properties if necessary
+}
+
+// Define the structure for CartData
+interface CartData {
+  cartItems: CartItem[];
+  message?: string;
+}
+
+export const useCartQuantity = (
+  userName: string | null | undefined
+): number => {
+  const [totalQuantity, setTotalQuantity] = useState<number>(0);
 
   useEffect(() => {
+    if (!userName) {
+      console.error("Username is missing");
+      return;
+    }
+
     const fetchCartData = async () => {
       try {
         const response = await fetch(`/api/cart?userName=${userName}`);
-        const data = await response.json();
 
-        if (response.ok && data.cartItems) {
-          // Calculate the total quantity
-          const total = data.cartItems.reduce(
-            (sum, item) => sum + item.quantity,
-            0
+        if (!response.ok) {
+          console.error(
+            "Failed to fetch cart data. HTTP Status:",
+            response.status
           );
+          return;
+        }
+
+        const data: CartData = await response.json();
+
+        if (data.cartItems) {
+          // Safely calculate the total quantity by validating each item
+          const total = data.cartItems.reduce((sum, item) => {
+            const quantity = Number(item.quantity);
+            return sum + (isNaN(quantity) ? 0 : quantity); // Validate if quantity is a valid number
+          }, 0);
+
           setTotalQuantity(total);
         } else {
-          console.error("Failed to fetch cart data:", data.message);
+          console.error("No cart items found:", data.message);
         }
       } catch (error) {
         console.error("Error fetching cart data:", error);
