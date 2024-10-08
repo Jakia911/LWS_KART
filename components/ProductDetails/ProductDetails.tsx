@@ -51,6 +51,46 @@ const ProductDetails: FC<ProductDetailsProps> = ({ product, userName }) => {
     }
   };
 
+  //handle increment cart quantity
+
+  interface UpdateCart {
+    userName: string | null | undefined;
+    productId: string | undefined;
+  }
+
+  interface UpdateCartResponse {
+    newQuantity: number;
+    message?: string;
+  }
+  const handleIncrement = async () => {
+    const updateCart: UpdateCart = {
+      userName: userName,
+      productId: product?.id,
+    };
+    try {
+      const response = await fetch("/api/cart", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify({
+          updateCart,
+        }),
+      });
+
+      const data: UpdateCartResponse = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to increment quantity");
+      }
+
+      console.log("Product quantity updated:", data.newQuantity);
+      // Optionally, update the UI with the new quantity
+    } catch (error) {
+      console.error("Error incrementing quantity:", error);
+    }
+  };
   // handle add to wishlist
   const handleAddToWishlist = async () => {
     const wishlistData = {
@@ -189,7 +229,10 @@ const ProductDetails: FC<ProductDetailsProps> = ({ product, userName }) => {
             <div className="h-8 w-8 text-base flex items-center justify-center">
               4
             </div>
-            <div className="h-8 w-8 text-xl flex items-center justify-center cursor-pointer select-none">
+            <div
+              onClick={handleIncrement}
+              className="h-8 w-8 text-xl flex items-center justify-center cursor-pointer select-none"
+            >
               +
             </div>
           </div>

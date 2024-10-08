@@ -1,4 +1,4 @@
-import { cartModel } from "@/models/cart-model";
+import { cartModel, ICart } from "@/models/cart-model";
 import { dbConnect } from "@/services/mongo";
 import { CartRequestBody } from "@/types/cart";
 import { NextResponse } from "next/server";
@@ -80,18 +80,25 @@ export const GET = async (request: Request): Promise<NextResponse> => {
 
 
 
+interface UpdateCartRequest {
+  productId: string;
+  userName: string;
+}
+
 export const PUT = async (request: Request): Promise<NextResponse> => {
   try {
-    const { productId, userName } = await request.json();
+    // Parse the request body and type it correctly
+    const { productId, userName }: UpdateCartRequest = await request.json();
 
-    
+    // Validate required fields
     if (!productId || !userName) {
       return NextResponse.json({ message: 'Missing required fields' }, { status: 400 });
     }
 
-    await dbConnect(); 
+    await dbConnect(); // Ensure DB connection
 
-    const existingCart = await cartModel.findOne({ userName, productId });
+    // Find the user's cart with the specific product
+    const existingCart: ICart | null = await cartModel.findOne({ userName, productId });
 
     if (!existingCart) {
       return NextResponse.json({ message: 'Cart or product not found' }, { status: 404 });
@@ -100,10 +107,10 @@ export const PUT = async (request: Request): Promise<NextResponse> => {
     // Increment the quantity by 1
     const newQuantity = (existingCart.quantity || 0) + 1;
 
-    
+    // Update the quantity of the specific product in the cart
     await cartModel.updateOne(
-      { userName, productId }, 
-      { $set: { quantity: newQuantity } }
+      { userName, productId }, // Find by username and product ID
+      { $set: { quantity: newQuantity } } // Update the quantity
     );
 
     return NextResponse.json({ message: 'Product quantity incremented successfully', newQuantity }, { status: 200 });
