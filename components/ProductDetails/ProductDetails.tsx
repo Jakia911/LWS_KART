@@ -62,32 +62,58 @@ const ProductDetails: FC<ProductDetailsProps> = ({ product, userName }) => {
     newQuantity: number;
     message?: string;
   }
+
   const handleIncrement = async () => {
     const updateCart = {
       userName: userName,
       productId: product?.id,
+      action: "increment",
     };
-
-    console.log(updateCart);
     try {
       const response = await fetch("/api/cart", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-
         body: JSON.stringify(updateCart),
       });
 
-      const data: UpdateCartResponse = await response.json();
-      console.log("updated cart data", data);
+      const data = await response.json();
 
       if (!response.ok) {
         throw new Error(data.message || "Failed to increment quantity");
       }
 
-      console.log("Product quantity updated:", data.newQuantity);
-      // Optionally, update the UI with the new quantity
+      // Update the UI with the new quantity
+      console.log("Product quantity incremented:", data.newQuantity);
+    } catch (error) {
+      console.error("Error incrementing quantity:", error);
+    }
+  };
+
+  const handleDecrement = async () => {
+    const updateCart = {
+      userName: userName,
+      productId: product?.id,
+      action: "decrement",
+    };
+    try {
+      const response = await fetch("/api/cart", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updateCart),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to increment quantity");
+      }
+
+      // Update the UI with the new quantity
+      console.log("Product quantity incremented:", data.newQuantity);
     } catch (error) {
       console.error("Error incrementing quantity:", error);
     }
@@ -224,7 +250,10 @@ const ProductDetails: FC<ProductDetailsProps> = ({ product, userName }) => {
         <div className="mt-4">
           <h3 className="text-sm text-gray-800 uppercase mb-1">Quantity</h3>
           <div className="flex border border-gray-300 text-gray-600 divide-x divide-gray-300 w-max">
-            <div className="h-8 w-8 text-xl flex items-center justify-center cursor-pointer select-none">
+            <div
+              onClick={handleDecrement}
+              className="h-8 w-8 text-xl flex items-center justify-center cursor-pointer select-none"
+            >
               -
             </div>
             <div className="h-8 w-8 text-base flex items-center justify-center">
