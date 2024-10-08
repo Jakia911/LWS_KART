@@ -74,3 +74,41 @@ export const GET = async (request: Request): Promise<NextResponse> => {
     return NextResponse.json({ message: 'Failed to fetch cart data', error: error.message }, { status: 500 });
   }
 };
+
+
+//increment the quantity by one
+
+
+
+export const PUT = async (request: Request): Promise<NextResponse> => {
+  try {
+    const { productId, userName } = await request.json();
+
+    
+    if (!productId || !userName) {
+      return NextResponse.json({ message: 'Missing required fields' }, { status: 400 });
+    }
+
+    await dbConnect(); 
+
+    const existingCart = await cartModel.findOne({ userName, productId });
+
+    if (!existingCart) {
+      return NextResponse.json({ message: 'Cart or product not found' }, { status: 404 });
+    }
+
+    // Increment the quantity by 1
+    const newQuantity = (existingCart.quantity || 0) + 1;
+
+    
+    await cartModel.updateOne(
+      { userName, productId }, 
+      { $set: { quantity: newQuantity } }
+    );
+
+    return NextResponse.json({ message: 'Product quantity incremented successfully', newQuantity }, { status: 200 });
+  } catch (error: any) {
+    console.error('Error updating cart:', error.message);
+    return NextResponse.json({ message: 'Failed to update product quantity', error: error.message }, { status: 500 });
+  }
+};
