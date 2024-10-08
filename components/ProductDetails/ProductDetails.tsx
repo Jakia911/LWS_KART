@@ -53,20 +53,22 @@ const ProductDetails: FC<ProductDetailsProps> = ({ product, userName }) => {
 
   //handle increment cart quantity
 
-  interface UpdateCart {
-    userName: string | null | undefined;
-    productId: string | undefined;
-  }
+  // interface UpdateCart {
+  //   userName: string | null | undefined;
+  //   productId: string | undefined;
+  // }
 
   interface UpdateCartResponse {
     newQuantity: number;
     message?: string;
   }
   const handleIncrement = async () => {
-    const updateCart: UpdateCart = {
+    const updateCart = {
       userName: userName,
       productId: product?.id,
     };
+
+    console.log(updateCart);
     try {
       const response = await fetch("/api/cart", {
         method: "PUT",
@@ -74,12 +76,11 @@ const ProductDetails: FC<ProductDetailsProps> = ({ product, userName }) => {
           "Content-Type": "application/json",
         },
 
-        body: JSON.stringify({
-          updateCart,
-        }),
+        body: JSON.stringify(updateCart),
       });
 
       const data: UpdateCartResponse = await response.json();
+      console.log("updated cart data", data);
 
       if (!response.ok) {
         throw new Error(data.message || "Failed to increment quantity");

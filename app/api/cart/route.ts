@@ -1,4 +1,4 @@
-import { cartModel, ICart } from "@/models/cart-model";
+import { cartModel } from "@/models/cart-model";
 import { dbConnect } from "@/services/mongo";
 import { CartRequestBody } from "@/types/cart";
 import { NextResponse } from "next/server";
@@ -90,6 +90,8 @@ export const PUT = async (request: Request): Promise<NextResponse> => {
     // Parse the request body and type it correctly
     const { productId, userName }: UpdateCartRequest = await request.json();
 
+    console.log("user data for increment quantity",productId,userName)
+
     // Validate required fields
     if (!productId || !userName) {
       return NextResponse.json({ message: 'Missing required fields' }, { status: 400 });
@@ -98,7 +100,7 @@ export const PUT = async (request: Request): Promise<NextResponse> => {
     await dbConnect(); // Ensure DB connection
 
     // Find the user's cart with the specific product
-    const existingCart: ICart | null = await cartModel.findOne({ userName, productId });
+    const existingCart = await cartModel.findOne({ userName, productId });
 
     if (!existingCart) {
       return NextResponse.json({ message: 'Cart or product not found' }, { status: 404 });
