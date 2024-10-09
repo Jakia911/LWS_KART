@@ -43,3 +43,33 @@ export const POST = async(request:Request):Promise<NextResponse> => {
 
 
 }
+
+
+//get the total of wishlist quantity
+
+export const GET = async (request:Request) => {
+  
+  try {
+    //get the url from the search params
+  const { searchParams } = new URL(request.url);
+  
+  const userName = searchParams.get('userName');
+
+
+  if (!userName) {
+    NextResponse.json({messege:"Username is required"},{status:400})
+  }
+
+    //db connection
+      await dbConnect();
+
+
+//return the wishlist items
+    const wishlistItems = wishlistModel.find({ userName });
+    
+    return NextResponse.json({wishlistItems},{status:200})
+  } catch (err:any) {
+    console.log("error fetching wishlist data",);
+    return NextResponse.json({messege:"failed to add to wishlist",err:err.messege},{status:500})
+  }
+}
