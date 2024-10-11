@@ -1,10 +1,12 @@
+"use client";
+
 import { Product } from "@/types/product";
 import { useEffect, useState } from "react";
 import RelatedProductCard from "./RelatedProductCard";
 
 interface RelatedProductsProps {
-  category: string;
-  productId: string;
+  category: string | undefined;
+  productId: string | undefined;
 }
 
 const RelatedProducts: React.FC<RelatedProductsProps> = ({
@@ -17,10 +19,10 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
     const fetchRelatedProducts = async () => {
       try {
         const response = await fetch(
-          `api/relatedProducts?category=${category}&productId=${productId}`
+          `/api/relatedProducts?category=${category}&productId=${productId}`
         );
         const data = await response.json();
-        3;
+
         if (response.ok) {
           setRelatedProducts(data);
         } else {
@@ -30,8 +32,10 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
         console.log("Error fetching related products", err);
       }
     };
+
     fetchRelatedProducts();
-  });
+  }, [category, productId]); // Add dependencies here to trigger on category/productId change
+
   return (
     <>
       <h2 className="text-2xl font-medium text-gray-800 uppercase mb-6">
@@ -40,6 +44,7 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
         {relatedProducts.map((prod) => (
           <RelatedProductCard
+            key={prod.id} // Always use a unique key for list items
             prod={prod}
             category={category}
             productId={productId}

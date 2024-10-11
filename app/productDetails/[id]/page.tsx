@@ -1,6 +1,7 @@
 import { authOptions } from "@/auth";
 import ProductDescription from "@/components/ProductDetails/ProductDescription";
 import ProductDetails from "@/components/ProductDetails/ProductDetails";
+import RelatedProducts from "@/components/ProductDetails/RelatedProducts";
 import { getProductById } from "@/database/queries";
 import { getServerSession } from "next-auth";
 
@@ -15,6 +16,9 @@ const ProductDetailsPage = async ({
   //fetch user session data
 
   const productInfo = await getProductById(id);
+
+  const category = productInfo?.category;
+  const productId = productInfo?.id;
 
   //user session data
 
@@ -36,6 +40,8 @@ const ProductDetailsPage = async ({
       {/* product details page */}
       <ProductDetails product={productInfo} userName={userName} />
       <ProductDescription product={productInfo} />
+
+      <RelatedProducts category={category} productId={productId} />
     </>
   );
 };

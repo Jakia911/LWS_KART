@@ -6,8 +6,8 @@ import prod1 from "../../public/images/products/product1.jpg";
 
 interface relatedProductTypes {
   prod: Product;
-  productId: string;
-  category: string;
+  productId: string | undefined;
+  category: string | undefined;
 }
 const RelatedProductCard: React.FC<relatedProductTypes> = ({
   category,
