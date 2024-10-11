@@ -1,13 +1,27 @@
+import { Product } from "@/types/product";
+import Image from "next/image";
+import Link from "next/link";
 import React from "react";
+import prod1 from "../../public/images/products/product1.jpg";
 
-const RelatedProductCard = ({}) => {
-  return   <div
+interface relatedProductTypes {
+  prod: Product;
+  productId: string;
+  category: string;
+}
+const RelatedProductCard: React.FC<relatedProductTypes> = ({
+  category,
+  productId,
+  prod,
+}) => {
+  return (
+    <div
       className="bg-white shadow rounded overflow-hidden group"
       id={prod.id || ""}
     >
       <div className="relative">
         <Image
-          src={prod.image ? prod.image : prod1}
+          src={prod?.image ? prod.image : prod1}
           alt={prod.title || "product"}
           className="w-full"
           width={500}
@@ -40,7 +54,8 @@ const RelatedProductCard = ({}) => {
               {prod.title}
             </h4>
           </Link>
-          <button onClick={() => handleAddToWishlist()}>
+          {/* onClick={() => handleAddToWishlist()} */}
+          <button>
             <svg
               stroke="#FD3D57"
               fill="#FD3D57"
@@ -82,13 +97,12 @@ const RelatedProductCard = ({}) => {
           <div className="text-xs text-gray-500 ml-3">(150)</div>
         </div>
       </div>
-      <button
-        onClick={() => handleAddToCart()}
-        className="block w-full py-1 text-center text-white bg-primary border border-primary rounded-b hover:bg-transparent hover:text-primary transition"
-      >
+      {/* onClick={() => handleAddToCart()} */}
+      <button className="block w-full py-1 text-center text-white bg-primary border border-primary rounded-b hover:bg-transparent hover:text-primary transition">
         Add to cart
       </button>
-    </div>>;
+    </div>
+  );
 };
 
 export default RelatedProductCard;

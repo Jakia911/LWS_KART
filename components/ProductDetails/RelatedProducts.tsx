@@ -30,6 +30,7 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
         console.log("Error fetching related products", err);
       }
     };
+    fetchRelatedProducts();
   });
   return (
     <>
@@ -37,7 +38,13 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
         Related Products
       </h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-        <RelatedProductCard />
+        {relatedProducts.map((prod) => (
+          <RelatedProductCard
+            prod={prod}
+            category={category}
+            productId={productId}
+          />
+        ))}
       </div>
     </>
   );
