@@ -1,6 +1,8 @@
 import ShopProducts from "@/components/ShopProducts";
+import { getAllProducts } from "@/database/queries";
 
-const ShopPage = () => {
+const ShopPage = async () => {
+  const allProducts = await getAllProducts();
   return (
     <>
       <div className="container py-4 flex items-center gap-3">
@@ -405,7 +407,7 @@ const ShopPage = () => {
             </div>
           </div>
         </div>
-        <ShopProducts />
+        <ShopProducts allProducts={allProducts} />
       </div>
     </>
   );
