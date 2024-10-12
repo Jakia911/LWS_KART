@@ -1,21 +1,31 @@
-import { useRouter } from "next/router";
-import { ChangeEvent, useState } from "react";
+"use client";
+
+import { useRouter } from "next/navigation";
+import { ChangeEvent, useEffect, useState } from "react";
 
 const SearchForm = () => {
   const [searchQuery, setSearchQuery] = useState<string>(""); // Specify that searchQuery is of type string
+  const [isClient, setIsClient] = useState<boolean>(false); // Ensure we are on the client
   const router = useRouter();
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsClient(true); // Only set to true once we are on the client
+    }
+  }, []);
 
   const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (searchQuery.trim()) {
+    if (searchQuery.trim() && isClient) {
+      // Redirect to the shop page with the search query as a URL parameter
       router.push(`/shop?search=${encodeURIComponent(searchQuery)}`);
     }
   };
-
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
+
   return (
     <div className="w-full max-w-xl relative flex">
       <form action="" onSubmit={handleSearchSubmit}>

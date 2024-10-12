@@ -1,20 +1,31 @@
+"use client";
 import { Product } from "@/types/product";
+import { GetServerSideProps } from "next";
 import Image from "next/image";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import prod1 from "../public/images/products/product1.jpg";
 
-interface productType {
+interface ShopPageProps {
   allProducts: Product[];
+  searchTerm: string;
 }
 
-const ShopProducts: React.FC<productType> = ({ allProducts }) => {
+// Fetch search term from server-side props
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { search } = context.query; // Access query parameters from context
+
+  // Return the search term as a prop or an empty string if not provided
+  return {
+    props: {
+      searchTerm: (search as string) || "", // Type assertion ensures it's treated as a string
+      allProducts: [], // Initialize with an empty array, you can add logic to fetch default products
+    },
+  };
+};
+
+const ShopProducts: React.FC<ShopPageProps> = ({ allProducts, searchTerm }) => {
   const [products, setProducts] = useState<Product[]>(allProducts); // Initialize with allProducts
   const [loading, setLoading] = useState<boolean>(true);
-  const router = useRouter();
-
-  // Extract search query from router
-  const { search } = router.query;
 
   useEffect(() => {
     const fetchSearchedProducts = async () => {
@@ -23,8 +34,10 @@ const ShopProducts: React.FC<productType> = ({ allProducts }) => {
         let data;
 
         // If there's a search term, fetch filtered products
-        if (search) {
-          const res = await fetch(`/api/products?search=${search}`);
+        if (searchTerm) {
+          const res = await fetch(
+            `/api/products?search=${encodeURIComponent(searchTerm)}`
+          );
           data = await res.json();
         }
 
@@ -43,7 +56,7 @@ const ShopProducts: React.FC<productType> = ({ allProducts }) => {
 
     // Fetch either the search results or show the default products
     fetchSearchedProducts();
-  }, [search, allProducts]); // Rerun effect when search query or allProducts change
+  }, [searchTerm, allProducts]); // Rerun effect when searchTerm or allProducts change
 
   return (
     <div className="col-span-3">
