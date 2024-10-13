@@ -1,69 +1,65 @@
 "use client";
 import { Product } from "@/types/product";
-import { GetServerSideProps } from "next";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import prod1 from "../public/images/products/product1.jpg";
 
 interface ShopPageProps {
   allProducts: Product[];
-  searchTerm: string;
 }
 
 // Fetch search term from server-side props
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { search } = context.query; // Access query parameters from context
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+//   const { search } = context.query; // Access query parameters from context
+//   console.log(search);
+//   // Return the search term as a prop or an empty string if not provided
+//   return {
+//     props: {
+//       searchTerm: (search as string) || "", // Type assertion ensures it's treated as a string
+//       // Initialize with an empty array, you can add logic to fetch default products
+//     },
+//   };
+// };
 
-  // Return the search term as a prop or an empty string if not provided
-  return {
-    props: {
-      searchTerm: (search as string) || "", // Type assertion ensures it's treated as a string
-      allProducts: [], // Initialize with an empty array, you can add logic to fetch default products
-    },
-  };
-};
-
-const ShopProducts: React.FC<ShopPageProps> = ({ allProducts, searchTerm }) => {
+const ShopProducts: React.FC<ShopPageProps> = ({ allProducts }) => {
   const [products, setProducts] = useState<Product[]>(allProducts); // Initialize with allProducts
-  const [loading, setLoading] = useState<boolean>(true);
+  // const [loading, setLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    const fetchSearchedProducts = async () => {
-      try {
-        setLoading(true);
-        let data;
+  // useEffect(() => {
+  //   const fetchSearchedProducts = async () => {
+  //     try {
+  //       setLoading(true);
+  //       let data;
+  //       console.log(searchTerm);
+  //       // If there's a search term, fetch filtered products
+  //       if (searchTerm) {
+  //         const res = await fetch(
+  //           `/api/products?search=${encodeURIComponent(searchTerm)}`
+  //         );
+  //         data = await res.json();
+  //       }
 
-        // If there's a search term, fetch filtered products
-        if (searchTerm) {
-          const res = await fetch(
-            `/api/products?search=${encodeURIComponent(searchTerm)}`
-          );
-          data = await res.json();
-        }
+  //       // If search results are found, update state; otherwise, fallback to allProducts
+  //       if (data && data.length > 0) {
+  //         setProducts(data);
+  //       } else {
+  //         setProducts(allProducts);
+  //       }
+  //     } catch (err: any) {
+  //       console.log("Error fetching products", err);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-        // If search results are found, update state; otherwise, fallback to allProducts
-        if (data && data.length > 0) {
-          setProducts(data);
-        } else {
-          setProducts(allProducts);
-        }
-      } catch (err: any) {
-        console.log("Error fetching products", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    // Fetch either the search results or show the default products
-    fetchSearchedProducts();
-  }, [searchTerm, allProducts]); // Rerun effect when searchTerm or allProducts change
+  //   // Fetch either the search results or show the default products
+  //   fetchSearchedProducts();
+  // }, [searchTerm, allProducts]); // Rerun effect when searchTerm or allProducts change
 
   return (
     <div className="col-span-3">
       <div className="grid md:grid-cols-3 grid-cols-2 gap-6">
-        {loading ? (
-          <p>Loading products...</p>
-        ) : products.length ? (
+        {products.length ? (
           products.map((prod) => (
             <div
               key={prod.id}
