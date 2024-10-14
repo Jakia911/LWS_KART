@@ -8,7 +8,11 @@ interface allProductProp {
 }
 
 const CategoryFilter: React.FC<allProductProp> = ({ allProducts }) => {
-  const [categories, setCategories] = useState<string[]>([]); // Initialize state with an empty array
+  const [categories, setCategories] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+
+  // Initialize state with an empty array
 
   useEffect(() => {
     const getUniqueCategories = () => {
@@ -20,8 +24,28 @@ const CategoryFilter: React.FC<allProductProp> = ({ allProducts }) => {
     };
 
     getUniqueCategories();
-  }, [allProducts]); // Dependency array should include 'allProducts', not 'categories'
+  }, [allProducts]);
   console.log(categories);
+
+  const handleCategoryChange = (category: string) => {
+    const updatedSelectedCategories = selectedCategories.includes(category)
+      ? selectedCategories.filter((cat) => cat !== category)
+      : [...selectedCategories, category];
+
+    setSelectedCategories(updatedSelectedCategories);
+
+    // Filter products based on selected categories
+    if (updatedSelectedCategories.length === 0) {
+      // If no categories selected, show all products
+      setFilteredProducts(allProducts);
+    } else {
+      const filtered = allProducts.filter((product) =>
+        updatedSelectedCategories.includes(product.category)
+      );
+      setFilteredProducts(filtered);
+    }
+  };
+
   return (
     <div>
       <h3 className="text-xl text-gray-800 mb-3 uppercase font-medium">
