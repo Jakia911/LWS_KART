@@ -5,7 +5,7 @@ import { useState } from "react";
 import prod1 from "../public/images/products/product1.jpg";
 
 interface ShopPageProps {
-  allProducts: Product[];
+  products: Product[];
 }
 
 // Fetch search term from server-side props
@@ -21,7 +21,7 @@ interface ShopPageProps {
 //   };
 // };
 
-const ShopProducts: React.FC<ShopPageProps> = ({ allProducts }) => {
+const ShopProducts: React.FC<ShopPageProps> = ({ products }) => {
   const [products, setProducts] = useState<Product[]>(allProducts); // Initialize with allProducts
   // const [loading, setLoading] = useState<boolean>(true);
 

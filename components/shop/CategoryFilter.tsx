@@ -4,10 +4,10 @@ import { Product } from "@/types/product";
 import { useEffect, useState } from "react";
 
 interface allProductProp {
-  allProducts: Product[];
+  products: Product[];
 }
 
-const CategoryFilter: React.FC<allProductProp> = ({ allProducts }) => {
+const CategoryFilter: React.FC<allProductProp> = ({ products }) => {
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
