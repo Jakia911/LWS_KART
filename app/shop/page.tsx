@@ -1,9 +1,32 @@
 import CategoryFilter from "@/components/shop/CategoryFilter";
 import ShopProducts from "@/components/ShopProducts";
-import { getAllProducts } from "@/database/queries";
+import { Product } from "@/types/product";
+import { useEffect, useState } from "react";
 
 const ShopPage = async () => {
-  const allProducts = await getAllProducts();
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch("/api/getAllProducts");
+        if (!response.ok) {
+          throw new Error("Failed to fetch products");
+        }
+        const data: Product[] = await response.json();
+        setProducts(data);
+      } catch (error: any) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
   return (
     <>
       <div className="container py-4 flex items-center gap-3">
