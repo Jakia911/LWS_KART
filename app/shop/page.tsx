@@ -10,7 +10,7 @@ const ShopPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>(products);
 
   // const allProducts = getAllProducts();
   // useEffect(() => {
@@ -59,6 +59,7 @@ const ShopPage = () => {
       ? selectedCategories.filter((cat) => cat !== category)
       : [...selectedCategories, category];
 
+    console.log(updatedSelectedCategories);
     setSelectedCategories(updatedSelectedCategories);
 
     // Filter products based on selected categories
@@ -72,7 +73,7 @@ const ShopPage = () => {
       setFilteredProducts(filtered);
     }
   };
-
+  console.log(filteredProducts);
   return (
     <>
       <div className="container py-4 flex items-center gap-3">
@@ -427,7 +428,7 @@ const ShopPage = () => {
             </div>
           </div>
         </div>
-        <ShopProducts products={products} />
+        <ShopProducts filteredProducts={filteredProducts} />
       </div>
     </>
   );

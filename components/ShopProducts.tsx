@@ -4,7 +4,7 @@ import Image from "next/image";
 import prod1 from "../public/images/products/product1.jpg";
 
 interface ShopPageProps {
-  products: Product[];
+  filteredProducts: Product[];
 }
 
 // Fetch search term from server-side props
@@ -20,7 +20,7 @@ interface ShopPageProps {
 //   };
 // };
 
-const ShopProducts: React.FC<ShopPageProps> = ({ products }) => {
+const ShopProducts: React.FC<ShopPageProps> = ({ filteredProducts }) => {
   // const [loading, setLoading] = useState<boolean>(true);
 
   // useEffect(() => {
@@ -57,8 +57,8 @@ const ShopProducts: React.FC<ShopPageProps> = ({ products }) => {
   return (
     <div className="col-span-3">
       <div className="grid md:grid-cols-3 grid-cols-2 gap-6">
-        {products.length ? (
-          products.map((prod) => (
+        {filteredProducts.length ? (
+          filteredProducts.map((prod) => (
             <div
               key={prod.id}
               className="bg-white shadow rounded overflow-hidden group"
