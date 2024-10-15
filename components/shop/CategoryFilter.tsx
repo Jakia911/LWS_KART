@@ -4,19 +4,23 @@ import { Product } from "@/types/product";
 import { useEffect, useState } from "react";
 
 interface allProductProp {
+  selectedCategories: string[];
   products: Product[];
+  handleCategoryChange: (category: string) => void;
 }
 
-const CategoryFilter: React.FC<allProductProp> = ({ products }) => {
+const CategoryFilter: React.FC<allProductProp> = ({
+  selectedCategories,
+  products,
+  handleCategoryChange,
+}) => {
   const [categories, setCategories] = useState<string[]>([]);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
 
   // Initialize state with an empty array
 
   useEffect(() => {
     const getUniqueCategories = () => {
-      const allCategories = allProducts.map((prod) => prod.category);
+      const allCategories = products.map((prod) => prod.category);
       const uniqCategories = allCategories.filter(
         (category, index) => allCategories.indexOf(category) === index
       );
@@ -24,27 +28,8 @@ const CategoryFilter: React.FC<allProductProp> = ({ products }) => {
     };
 
     getUniqueCategories();
-  }, [allProducts]);
+  }, [products]);
   console.log(categories);
-
-  const handleCategoryChange = (category: string) => {
-    const updatedSelectedCategories = selectedCategories.includes(category)
-      ? selectedCategories.filter((cat) => cat !== category)
-      : [...selectedCategories, category];
-
-    setSelectedCategories(updatedSelectedCategories);
-
-    // Filter products based on selected categories
-    if (updatedSelectedCategories.length === 0) {
-      // If no categories selected, show all products
-      setFilteredProducts(allProducts);
-    } else {
-      const filtered = allProducts.filter((product) =>
-        updatedSelectedCategories.includes(product.category)
-      );
-      setFilteredProducts(filtered);
-    }
-  };
 
   return (
     <div>
@@ -58,8 +43,10 @@ const CategoryFilter: React.FC<allProductProp> = ({ products }) => {
             <div key={index} className="flex items-center">
               <input
                 type="checkbox"
-                name={`cat-${index}`}
-                id={`cat-${index}`}
+                id={category}
+                value={category}
+                onChange={() => handleCategoryChange(category)}
+                checked={selectedCategories.includes(category)}
                 className="text-primary focus:ring-0 rounded-sm cursor-pointer"
               />
               <label

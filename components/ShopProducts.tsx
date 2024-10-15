@@ -1,7 +1,6 @@
 "use client";
 import { Product } from "@/types/product";
 import Image from "next/image";
-import { useState } from "react";
 import prod1 from "../public/images/products/product1.jpg";
 
 interface ShopPageProps {
@@ -22,7 +21,6 @@ interface ShopPageProps {
 // };
 
 const ShopProducts: React.FC<ShopPageProps> = ({ products }) => {
-  const [products, setProducts] = useState<Product[]>(allProducts); // Initialize with allProducts
   // const [loading, setLoading] = useState<boolean>(true);
 
   // useEffect(() => {

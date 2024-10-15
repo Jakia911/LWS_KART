@@ -1,32 +1,78 @@
+"use client";
+
 import CategoryFilter from "@/components/shop/CategoryFilter";
 import ShopProducts from "@/components/ShopProducts";
 import { Product } from "@/types/product";
 import { useEffect, useState } from "react";
 
-const ShopPage = async () => {
+const ShopPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+
+  // const allProducts = getAllProducts();
+  // useEffect(() => {
+  //   const fetchProducts = async () => {
+  //     try {
+  //       setLoading(true);
+  //       const response = await fetch("/api/getAllProducts");
+  //       if (!response.ok) {
+  //         throw new Error("Failed to fetch products");
+  //       }
+  //       const data: Product[] = await response.json();
+  //       setProducts(data);
+  //     } catch (error: any) {
+  //       setError(error.message);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchProducts();
+  // }, []);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch("/api/getAllProducts");
+    setLoading(true);
+
+    fetch("/api/getAllProducts")
+      .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch products");
         }
-        const data: Product[] = await response.json();
-        setProducts(data);
-      } catch (error: any) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+        return response.json(); // Parse the response as JSON
+      })
+      .then((data) => {
+        setProducts(data); // Set the fetched products data
+      })
+      .catch((error) => {
+        setError(error.message); // Handle any error that occurs during fetching
+      })
+      .finally(() => {
+        setLoading(false); // Stop loading when fetch is complete
+      });
+  }, []); // Only run once when the component mounts
 
-    fetchProducts();
-  }, []);
+  const handleCategoryChange = (category: string) => {
+    const updatedSelectedCategories = selectedCategories.includes(category)
+      ? selectedCategories.filter((cat) => cat !== category)
+      : [...selectedCategories, category];
+
+    setSelectedCategories(updatedSelectedCategories);
+
+    // Filter products based on selected categories
+    if (updatedSelectedCategories.length === 0) {
+      // If no categories selected, show all products
+      setFilteredProducts(products);
+    } else {
+      const filtered = products.filter((product) =>
+        updatedSelectedCategories.includes(product.category)
+      );
+      setFilteredProducts(filtered);
+    }
+  };
+
   return (
     <>
       <div className="container py-4 flex items-center gap-3">
@@ -288,7 +334,11 @@ const ShopPage = async () => {
 
         <div className="col-span-1 bg-white px-4 pb-6 shadow rounded overflow-hiddenb hidden md:block">
           <div className="divide-y divide-gray-200 space-y-5">
-            <CategoryFilter products={products} />
+            <CategoryFilter
+              selectedCategories={selectedCategories}
+              products={products}
+              handleCategoryChange={handleCategoryChange}
+            />
 
             <div className="pt-4">
               <h3 className="text-xl text-gray-800 mb-3 uppercase font-medium">
