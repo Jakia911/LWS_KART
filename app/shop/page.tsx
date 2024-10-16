@@ -8,32 +8,19 @@ import { useEffect, useState } from "react";
 
 const ShopPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
+
+  // for category filter
+
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>(products);
 
-  // const allProducts = getAllProducts();
-  // useEffect(() => {
-  //   const fetchProducts = async () => {
-  //     try {
-  //       setLoading(true);
-  //       const response = await fetch("/api/getAllProducts");
-  //       if (!response.ok) {
-  //         throw new Error("Failed to fetch products");
-  //       }
-  //       const data: Product[] = await response.json();
-  //       setProducts(data);
-  //     } catch (error: any) {
-  //       setError(error.message);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
+  // for price filter
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
 
-  //   fetchProducts();
-  // }, []);
-
+  // fetch product data
   useEffect(() => {
     setLoading(true);
 
@@ -75,6 +62,16 @@ const ShopPage = () => {
     }
   };
   console.log(filteredProducts);
+
+  //
+  const handleMinPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMinPrice(e.target.value);
+  };
+
+  const handleMaxPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMaxPrice(e.target.value);
+  };
+
   return (
     <>
       <div className="container py-4 flex items-center gap-3">
@@ -343,7 +340,12 @@ const ShopPage = () => {
               handleCategoryChange={handleCategoryChange}
             />
             {/* price filter  */}
-            <PriceFilter />
+            <PriceFilter
+              minPrice={minPrice}
+              maxPrice={maxPrice}
+              handleMinPriceChange={handleMinPriceChange}
+              handleMaxPriceChange={handleMaxPriceChange}
+            />
 
             <div className="pt-4">
               <h3 className="text-xl text-gray-800 mb-3 uppercase font-medium">
