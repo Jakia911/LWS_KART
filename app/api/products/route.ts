@@ -7,6 +7,7 @@ import { NextResponse } from "next/server";
 
 
 
+
 // GET: Fetch products based on the search query
 export const GET = async (request: Request): Promise<NextResponse> => {
   try {

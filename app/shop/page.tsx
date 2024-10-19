@@ -71,6 +71,21 @@ const ShopPage = () => {
   const handleMaxPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMaxPrice(e.target.value);
   };
+  useEffect(() => {
+    const filtered = products.filter((product) => {
+      const price = product.price; // No need to redeclare type, TypeScript infers it
+      if (typeof price !== "number") {
+        return false; // Excludes products where price is undefined
+      }
+
+      const min = minPrice !== "" ? parseFloat(minPrice) : 0;
+      const max =
+        maxPrice !== "" ? parseFloat(maxPrice) : Number.MAX_SAFE_INTEGER;
+      return price >= min && price <= max;
+    });
+
+    setFilteredProducts(filtered);
+  }, [minPrice, maxPrice, products]);
 
   return (
     <>
