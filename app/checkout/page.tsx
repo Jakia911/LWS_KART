@@ -14,10 +14,18 @@ const CheckOutPage = () => {
         </span>
         <p className="text-gray-600 font-medium">Checkout</p>
       </div>
-      <CheckoutForm />
+      <div className="w-full max-w-[80%] mx-auto">
+        <div className="lg:flex items-center justify-center">
+          <div className="lg:w-[48%] w-full">
+            <CheckoutForm />
+          </div>
+          <div className="lg:w-[48%] w-full">
+            <PlaceorderForm />
+          </div>
 
-      {/* place order form */}
-      <PlaceorderForm />
+          {/* place order form */}
+        </div>
+      </div>
     </div>
   );
 };
