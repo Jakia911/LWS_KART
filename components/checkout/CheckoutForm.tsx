@@ -1,4 +1,8 @@
-const CheckoutForm = () => {
+interface CheckoutFormprops {
+  userName: string | undefined | null;
+}
+
+const CheckoutForm: React.FC<CheckoutFormprops> = () => {
   return (
     <div className="space-y-4 lg:mx-20 ">
       <div className="grid grid-cols-2 gap-4">

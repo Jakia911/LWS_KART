@@ -1,7 +1,12 @@
+import { authOptions } from "@/auth";
 import CheckoutForm from "@/components/checkout/CheckoutForm";
 import PlaceorderForm from "@/components/checkout/PlaceorderForm";
+import { getServerSession } from "next-auth";
 
-const CheckOutPage = () => {
+const CheckOutPage = async () => {
+  const session = await getServerSession(authOptions);
+  const userName = session?.user?.name;
+
   return (
     <div>
       {/* breadcrumb section */}
@@ -17,10 +22,10 @@ const CheckOutPage = () => {
       <div className="w-full max-w-[80%] mx-auto">
         <div className="lg:flex items-center justify-center">
           <div className="lg:w-[48%] w-full">
-            <CheckoutForm />
+            <CheckoutForm userName={userName} />
           </div>
           <div className="lg:w-[48%] w-full">
-            <PlaceorderForm />
+            <PlaceorderForm userName={userName} />
           </div>
 
           {/* place order form */}

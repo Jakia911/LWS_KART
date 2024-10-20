@@ -1,4 +1,44 @@
-const PlaceorderForm = () => {
+import { CartItem } from "@/types/cart";
+import { useEffect, useState } from "react";
+
+interface PlaceOrderprops {
+  userName: string | undefined | null;
+}
+interface CartData {
+  cartItems: CartItem[];
+  message?: string;
+}
+const PlaceorderForm: React.FC<PlaceOrderprops> = ({ userName }) => {
+  const [cart, setCart] = useState<CartItem[]>([]);
+
+  useEffect(() => {
+    if (!userName) {
+      console.error("Username is missing");
+      return;
+    }
+
+    const fetchCartData = async () => {
+      try {
+        const response = await fetch(`/api/cart?userName=${userName}`);
+
+        if (!response.ok) {
+          console.error(
+            "Failed to fetch cart data. HTTP Status:",
+            response.status
+          );
+          return;
+        }
+
+        const data = await response.json();
+        setCart(data);
+      } catch (error) {
+        console.error("Error fetching cart data:", error);
+      }
+    };
+
+    fetchCartData();
+  });
+  console.log(cart);
   return (
     <div className="container  lg:mx-20">
       {/* <div className="col-span-8 border border-gray-200 p-4 rounded">
