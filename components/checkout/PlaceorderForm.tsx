@@ -1,3 +1,5 @@
+"use client";
+
 import { CartItem } from "@/types/cart";
 import { useEffect, useState } from "react";
 
@@ -10,6 +12,7 @@ interface CartData {
 }
 const PlaceorderForm: React.FC<PlaceOrderprops> = ({ userName }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
     if (!userName) {
@@ -30,14 +33,30 @@ const PlaceorderForm: React.FC<PlaceOrderprops> = ({ userName }) => {
         }
 
         const data = await response.json();
-        setCart(data);
+        setCart(data.cartItems);
+
+        // get total amount of product
+        if (data.cartItems) {
+          // Safely calculate the total quantity by validating each item
+          const total = data.cartItems.reduce((sum: number, item: CartItem) => {
+            const quantity = Number(item.quantity);
+            const price = Number(item.price);
+            const totalSum =
+              sum + (isNaN(quantity) || isNaN(price) ? 0 : quantity * price);
+            return totalSum;
+          }, 0);
+
+          setTotalPrice(total);
+        } else {
+          console.error("No cart items found:", data.message);
+        }
       } catch (error) {
         console.error("Error fetching cart data:", error);
       }
     };
 
     fetchCartData();
-  });
+  }, [userName]);
   console.log(cart);
   return (
     <div className="container  lg:mx-20">
@@ -50,38 +69,16 @@ const PlaceorderForm: React.FC<PlaceOrderprops> = ({ userName }) => {
           order summary
         </h4>
         <div className="space-y-2">
-          <div className="flex justify-between">
-            <div>
-              <h5 className="text-gray-800 font-medium">Italian shape sofa</h5>
-              <p className="text-sm text-gray-600">Size: M</p>
+          {cart.map((prod) => (
+            <div className="flex justify-between">
+              <div>
+                <h5 className="text-gray-800 font-medium">{prod?.name}</h5>
+                <p className="text-sm text-gray-600">Size: M</p>
+              </div>
+              <p className="text-gray-600">x3</p>
+              <p className="text-gray-800 font-medium">{prod?.price}</p>
             </div>
-            <p className="text-gray-600">x3</p>
-            <p className="text-gray-800 font-medium">$320</p>
-          </div>
-          <div className="flex justify-between">
-            <div>
-              <h5 className="text-gray-800 font-medium">Italian shape sofa</h5>
-              <p className="text-sm text-gray-600">Size: M</p>
-            </div>
-            <p className="text-gray-600">x3</p>
-            <p className="text-gray-800 font-medium">$320</p>
-          </div>
-          <div className="flex justify-between">
-            <div>
-              <h5 className="text-gray-800 font-medium">Italian shape sofa</h5>
-              <p className="text-sm text-gray-600">Size: M</p>
-            </div>
-            <p className="text-gray-600">x3</p>
-            <p className="text-gray-800 font-medium">$320</p>
-          </div>
-          <div className="flex justify-between">
-            <div>
-              <h5 className="text-gray-800 font-medium">Italian shape sofa</h5>
-              <p className="text-sm text-gray-600">Size: M</p>
-            </div>
-            <p className="text-gray-600">x3</p>
-            <p className="text-gray-800 font-medium">$320</p>
-          </div>
+          ))}
         </div>
 
         <div className="flex justify-between border-b border-gray-200 mt-1 text-gray-800 font-medium py-3 uppercas">
@@ -96,7 +93,7 @@ const PlaceorderForm: React.FC<PlaceOrderprops> = ({ userName }) => {
 
         <div className="flex justify-between text-gray-800 font-medium py-3 uppercas">
           <p className="font-semibold">Total</p>
-          <p>$1280</p>
+          <p>{totalPrice}</p>
         </div>
 
         <div className="flex items-center mb-4 mt-2">
