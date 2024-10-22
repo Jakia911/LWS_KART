@@ -93,7 +93,7 @@ const PlaceorderForm: React.FC<PlaceOrderprops> = ({ userName }) => {
 
         <div className="flex justify-between text-gray-800 font-medium py-3 uppercas">
           <p className="font-semibold">Total</p>
-          <p>{totalPrice}</p>
+          <p>${totalPrice}</p>
         </div>
 
         <div className="flex items-center mb-4 mt-2">
