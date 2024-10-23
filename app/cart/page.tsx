@@ -1,8 +1,13 @@
+import { authOptions } from "@/auth";
+import CartItemCard from "@/components/cart/CartItemCard";
 import { CartItem } from "@/types/cart";
+import { getServerSession } from "next-auth";
 import { useState } from "react";
 
-const CartPage = () => {
+const CartPage = async () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const session = await getServerSession(authOptions);
+  const userName: string | undefined | null = session?.user?.name;
 
   return (
     <div className="container mx-auto mt-10">
@@ -26,26 +31,7 @@ const CartPage = () => {
               Total
             </h3>
           </div>
-          <div className="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5">
-            <div className="w-2/5 flex">
-              <div className="w-20">
-                <img className="h-24" src="/path/to/image" />
-              </div>
-              <div className="flex flex-col justify-between ml-4 flex-grow">
-                <span className="font-bold text-sm">Title</span>
-                <span className="text-red-500 text-xs">Remove</span>
-              </div>
-            </div>
-            <div className="w-1/5">
-              <input type="number" className="w-16 text-center" />
-            </div>
-            <div className="w-1/5 text-center">
-              <span className="text-sm">$50</span>
-            </div>
-            <div className="w-1/5 text-center">
-              <span className="text-sm"></span>
-            </div>
-          </div>
+          <CartItemCard userName={userName} />
           <a
             href="/checkout"
             className="flex font-semibold text-indigo-600 text-sm mt-10"
