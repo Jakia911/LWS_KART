@@ -1,11 +1,8 @@
 import { authOptions } from "@/auth";
 import CartItemCard from "@/components/cart/CartItemCard";
-import { CartItem } from "@/types/cart";
 import { getServerSession } from "next-auth";
-import { useState } from "react";
 
 const CartPage = async () => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const session = await getServerSession(authOptions);
   const userName: string | undefined | null = session?.user?.name;
 
@@ -51,9 +48,7 @@ const CartPage = async () => {
             Order Summary
           </h1>
           <div className="flex justify-between mt-10 mb-5">
-            <span className="font-semibold text-sm uppercase">
-              Items {cartItems.length}
-            </span>
+            <span className="font-semibold text-sm uppercase">Items 0</span>
             <span className="font-semibold text-sm">$120</span>
           </div>
           <div>

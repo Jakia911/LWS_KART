@@ -1,13 +1,30 @@
-import { useEffect } from "react";
+"use client";
+
+import { CartItem } from "@/types/cart";
+import { useEffect, useState } from "react";
 
 interface CartItemCardProps {
   userName: string | undefined | null;
 }
 
 const CartItemCard: React.FC<CartItemCardProps> = ({ userName }) => {
+  const [cartData, setCartData] = useState<CartItem[]>([]);
+
   useEffect(() => {
-    const res = fetch(`api/cart/`);
-  });
+    const fetchCartData = async () => {
+      try {
+        const res = await fetch(`api/cart?userName=${userName}`);
+        const data = await res.json();
+
+        setCartData(data.cartItems);
+      } catch (err) {
+        console.log("error while fetching data");
+      }
+    };
+    fetchCartData();
+  }, [userName]);
+
+  console.log(cartData);
   return (
     <div className="flex items-center hover:bg-gray-100 -mx-8 px-6 py-5">
       <div className="w-2/5 flex">
