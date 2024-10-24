@@ -4,7 +4,7 @@ const ProceedToCheckout = () => {
   return (
     <div
       id="summary"
-      className="w-1/4 px-8 py-10 border border-[#ddd] rounded-md shadow-md"
+      className=" lg:w-1/4 w-full px-8 py-10 border border-[#ddd] rounded-md shadow-md"
     >
       <h1 className="font-semibold text-2xl border-b pb-8">Order Summary</h1>
       <div className="flex justify-between  mb-5 border-b mt-[23px] pb-[23px]">

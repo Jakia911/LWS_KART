@@ -1,15 +1,18 @@
 "use client";
 
 import { CartItem } from "@/types/cart";
+import Image from "next/image";
 import { useEffect, useState } from "react";
+import remove from "../../public/images/remove.svg";
 
 interface CartItemCardProps {
-  userName: string | undefined | null;
+  userName?: string | undefined | null;
 }
 
 const CartItemCard: React.FC<CartItemCardProps> = ({ userName }) => {
   const [cartData, setCartData] = useState<CartItem[]>([]);
 
+  //fetch cart data
   useEffect(() => {
     const fetchCartData = async () => {
       try {
@@ -25,6 +28,62 @@ const CartItemCard: React.FC<CartItemCardProps> = ({ userName }) => {
   }, [userName]);
 
   console.log(cartData);
+
+  //handle quantity increment
+  const handleIncrement = async (cart: CartItem) => {
+    const updatedCart = {
+      userName: userName,
+      productId: cart?.productId,
+      action: "increment",
+    };
+    console.log(updatedCart);
+    try {
+      const res = await fetch(`api/cart/`, {
+        method: "PUT",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(updatedCart),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Cart quantity failed to increment");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  //handle quantity decrement
+  const handleDecrement = async (cart: CartItem) => {
+    const updateCart = {
+      userName: userName,
+      productId: cart?.productId,
+      action: "decrement",
+    };
+    try {
+      const response = await fetch("/api/cart", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updateCart),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to increment quantity");
+      }
+
+      // Update the UI with the new quantity
+      console.log("Product quantity incremented:", data.newQuantity);
+    } catch (error) {
+      console.error("Error incrementing quantity:", error);
+    }
+  };
   return (
     <>
       {cartData.length > 0 ? (
@@ -41,16 +100,41 @@ const CartItemCard: React.FC<CartItemCardProps> = ({ userName }) => {
                 <span className="font-bold text-sm">{cart?.name}</span>
               </div>
             </div>
-            <div className="w-1/5">
-              <span className="flex justify-center items-center">
-                {cart?.quantity}
-              </span>
+            <div className="w-1/5 flex justify-center items-center">
+              <div className="flex border border-gray-300 text-gray-600 divide-x divide-gray-300 w-max  ">
+                <div
+                  onClick={() => handleDecrement(cart)}
+                  className="h-8 w-8 text-xl flex items-center justify-center cursor-pointer select-none"
+                >
+                  -
+                </div>
+                <div className="h-8 w-8 text-base flex items-center justify-center">
+                  {cart?.quantity}
+                </div>
+                <div
+                  onClick={() => handleIncrement(cart)}
+                  className="h-8 w-8 text-xl flex items-center justify-center cursor-pointer select-none"
+                >
+                  +
+                </div>
+              </div>
+              {/* <span className="flex justify-center items-center"></span> */}
             </div>
             <div className="w-1/5 text-center">
               <span className="text-sm">{cart?.price}</span>
             </div>
             <div className="w-1/5 text-center">
               <span className="text-sm">$1250</span>
+            </div>
+            <div className="w-1/5 text-center flex items-center justify-center">
+              <span className="text-sm cursor-pointer">
+                <Image
+                  src={remove}
+                  width={20}
+                  height={20}
+                  alt="remove button"
+                />
+              </span>
             </div>
           </div>
         ))
