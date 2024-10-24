@@ -173,3 +173,52 @@ export const PUT = async (request: Request): Promise<NextResponse> => {
   }
 };
 
+
+//remove the cart from
+
+export const DELETE = async (request:Request):Promise<NextResponse> => {
+  try {
+    // Parse the request URL to get search parameters
+    const { searchParams } = new URL(request.url);
+    const productId = searchParams.get('productId'); 
+    const userName = searchParams.get('userName'); 
+
+    // Check if productId is provided
+    if (!productId) {
+      return NextResponse.json(
+        { message: 'Product ID is required to delete a cart item' },
+        { status: 400 }
+      );
+    }
+// Connect to the database
+    await dbConnect(); 
+
+    // Find and delete the cart item based on productId and optionally userName
+    const deletedCartItem = await cartModel.findOneAndDelete({
+      productId,
+      ...(userName && { userName }) 
+    });
+
+    if (!deletedCartItem) {
+      return NextResponse.json(
+        { message: 'Cart item not found' },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json(
+      { message: 'Cart item deleted successfully' },
+      { status: 200 }
+    );
+  } catch (error: any) {
+    console.error('Error deleting cart item:', error);
+    return NextResponse.json(
+      { message: 'Failed to delete cart item', error: error.message },
+      { status: 500 }
+    );
+  }
+}
+
+
+
+

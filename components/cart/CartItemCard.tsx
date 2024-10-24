@@ -12,6 +12,9 @@ interface CartItemCardProps {
 const CartItemCard: React.FC<CartItemCardProps> = ({ userName }) => {
   const [cartData, setCartData] = useState<CartItem[]>([]);
 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   //fetch cart data
   useEffect(() => {
     const fetchCartData = async () => {
@@ -84,6 +87,34 @@ const CartItemCard: React.FC<CartItemCardProps> = ({ userName }) => {
       console.error("Error incrementing quantity:", error);
     }
   };
+
+  //handle remove cartItem
+  const handleRemove = async (cart: CartItem) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch(
+        `/api/cart?productId=${cart.productId}&userName=${userName}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || "Failed to remove cart item");
+      }
+
+      console.log("Cart item removed successfully");
+      // Optionally update the cart state in your app here
+    } catch (error: any) {
+      setError(error.message);
+      console.error("Error removing cart item:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <>
       {cartData.length > 0 ? (
@@ -127,14 +158,17 @@ const CartItemCard: React.FC<CartItemCardProps> = ({ userName }) => {
               <span className="text-sm">$1250</span>
             </div>
             <div className="w-1/5 text-center flex items-center justify-center">
-              <span className="text-sm cursor-pointer">
+              <button
+                className="text-sm cursor-pointer"
+                onClick={() => handleRemove(cart)}
+              >
                 <Image
                   src={remove}
                   width={20}
                   height={20}
                   alt="remove button"
                 />
-              </span>
+              </button>
             </div>
           </div>
         ))
