@@ -21,7 +21,7 @@ const CartPage = async () => {
           <CartItemCard userName={userName} />
         </div>
 
-        <ProceedToCheckout />
+        <ProceedToCheckout userName={userName} />
       </div>
     </div>
   );

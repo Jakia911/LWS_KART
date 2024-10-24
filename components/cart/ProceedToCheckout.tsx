@@ -1,6 +1,44 @@
-import Link from "next/link";
+"use client";
 
-const ProceedToCheckout = () => {
+import { CartItem } from "@/types/cart";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+interface ProceedToCheckoutProps {
+  userName?: string | undefined | null;
+}
+const ProceedToCheckout: React.FC<ProceedToCheckoutProps> = ({ userName }) => {
+  const [subTotal, setSubTotal] = useState<number>(0);
+
+  useEffect(() => {
+    const fetchCartData = async () => {
+      try {
+        const res = await fetch(`api/cart?userName=${userName}`);
+        const data = await res.json();
+
+        if (data.cartItems) {
+          const totalAmount = data?.cartItems?.reduce(
+            (sum: number, item: CartItem) => {
+              const price = Number(item.price);
+              const quantity = Number(item.quantity);
+
+              const totalSum =
+                sum + (isNaN(price) || isNaN(quantity) ? 0 : price * quantity);
+
+              return totalSum;
+            }
+          );
+
+          setSubTotal(totalAmount);
+        } else {
+          console.log("no cart data found", data.messege);
+        }
+      } catch (err) {
+        console.log("error while fetching data");
+      }
+    };
+    fetchCartData();
+  }, [userName]);
+
   return (
     <div
       id="summary"
@@ -9,15 +47,15 @@ const ProceedToCheckout = () => {
       <h1 className="font-semibold text-2xl border-b pb-8">Order Summary</h1>
       <div className="flex justify-between  mb-5 border-b mt-[23px] pb-[23px]">
         <span className="font-semibold text-sm uppercase">SubTotal</span>
-        <span className="font-semibold text-sm">$120</span>
+        <span className="font-semibold text-sm">{subTotal}</span>
       </div>
       <div className="flex justify-between  mb-5 border-b mt-[23px] pb-[23px]">
         <span className="font-semibold text-sm uppercase">Shipping</span>
-        <span className="font-semibold text-sm">$120</span>
+        <span className="font-semibold text-sm">{"0"}</span>
       </div>
       <div className="flex justify-between  mb-5 border-b mt-[23px] pb-[23px]">
         <span className="font-semibold text-sm uppercase">Total</span>
-        <span className="font-semibold text-sm">$1120</span>
+        <span className="font-semibold text-sm">{total}</span>
       </div>
       <div className="mt-[30px]">
         <Link href="/checkout">
