@@ -19,15 +19,34 @@ const CartItemCard: React.FC<CartItemCardProps> = ({ userName }) => {
   useEffect(() => {
     const fetchCartData = async () => {
       try {
-        const res = await fetch(`api/cart?userName=${userName}`);
-        const data = await res.json();
+        // Encode userName to handle special characters in the URL
+        // const encodedUserName = encodeURIComponent(userName);
+        const response = await fetch(`api/cart?userName=${userName}`);
 
-        setCartData(data.cartItems);
-      } catch (err) {
-        console.log("error while fetching data");
+        if (!response.ok) {
+          // Check if the response status code is not OK (e.g., 404, 500, etc.)
+          throw new Error(`HTTP status ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        // Assuming data.cartItems is the correct path to your cart items
+        if (data && data.cartItems) {
+          setCartData(data.cartItems);
+        } else {
+          // Handle the case where cartItems might not be part of the response
+          console.error("Cart items not found in response");
+          setCartData([]); // Reset or handle as needed
+        }
+      } catch (err: any) {
+        // Log more detailed error information
+        console.error("Error while fetching cart data:", err.message);
       }
     };
-    fetchCartData();
+
+    if (userName) {
+      fetchCartData();
+    }
   }, [userName]);
 
   console.log(cartData);

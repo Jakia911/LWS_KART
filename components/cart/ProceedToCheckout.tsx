@@ -25,7 +25,8 @@ const ProceedToCheckout: React.FC<ProceedToCheckoutProps> = ({ userName }) => {
                 sum + (isNaN(price) || isNaN(quantity) ? 0 : price * quantity);
 
               return totalSum;
-            }
+            },
+            0
           );
 
           setSubTotal(totalAmount);
@@ -55,7 +56,7 @@ const ProceedToCheckout: React.FC<ProceedToCheckoutProps> = ({ userName }) => {
       </div>
       <div className="flex justify-between  mb-5 border-b mt-[23px] pb-[23px]">
         <span className="font-semibold text-sm uppercase">Total</span>
-        <span className="font-semibold text-sm">{total}</span>
+        <span className="font-semibold text-sm">{""}</span>
       </div>
       <div className="mt-[30px]">
         <Link href="/checkout">
