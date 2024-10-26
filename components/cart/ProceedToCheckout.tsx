@@ -8,6 +8,9 @@ interface ProceedToCheckoutProps {
 }
 const ProceedToCheckout: React.FC<ProceedToCheckoutProps> = ({ userName }) => {
   const [subTotal, setSubTotal] = useState<number>(0);
+  let shipping: number = 50;
+
+  const total = Number(subTotal + shipping);
 
   useEffect(() => {
     const fetchCartData = async () => {
@@ -48,15 +51,15 @@ const ProceedToCheckout: React.FC<ProceedToCheckoutProps> = ({ userName }) => {
       <h1 className="font-semibold text-2xl border-b pb-8">Order Summary</h1>
       <div className="flex justify-between  mb-5 border-b mt-[23px] pb-[23px]">
         <span className="font-semibold text-sm uppercase">SubTotal</span>
-        <span className="font-semibold text-sm">{subTotal}</span>
+        <span className="font-semibold text-sm">${subTotal}</span>
       </div>
       <div className="flex justify-between  mb-5 border-b mt-[23px] pb-[23px]">
         <span className="font-semibold text-sm uppercase">Shipping</span>
-        <span className="font-semibold text-sm">{"0"}</span>
+        <span className="font-semibold text-sm">${shipping}</span>
       </div>
       <div className="flex justify-between  mb-5 border-b mt-[23px] pb-[23px]">
         <span className="font-semibold text-sm uppercase">Total</span>
-        <span className="font-semibold text-sm">{""}</span>
+        <span className="font-semibold text-sm">${total}</span>
       </div>
       <div className="mt-[30px]">
         <Link href="/checkout">
