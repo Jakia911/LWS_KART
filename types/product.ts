@@ -9,8 +9,8 @@ export interface Product {
   category: string;
   image?: string;
   quantity?: number;
-  trending?: boolean;
-  topArrival?: boolean;
+  createdAt: Date;
+  popularity:number,
 }
 
 export interface IProduct {

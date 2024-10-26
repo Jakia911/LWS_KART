@@ -6,8 +6,9 @@ interface IProduct {
     description: string;
     category: string;
     image?: string;
-    trending?: boolean;
-    topArrival?: boolean;
+    createdAt: Date;
+  popularity:number,
+    
   
 }
 const productSchema = new Schema<IProduct>({
@@ -16,8 +17,8 @@ const productSchema = new Schema<IProduct>({
   description: { required: true, type: String },
   category: { required: true, type: String },
   image: { required: false, type: String },
-  trending: { required: false, type: Boolean },
-  topArrival: { required: false, type: Boolean },
+  createdAt: { type: Date, default: Date.now },
+  popularity: { type: Number, default: 0 },
  
 });
 const getProductModel = (): Model<IProduct> => {
