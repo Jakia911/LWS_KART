@@ -24,10 +24,10 @@ export const GET = async(request:Request):Promise<NextResponse> => {
 export const PUT = async (request:Request):Promise<NextResponse> => {
     try {
         dbConnect();
-        const { id }: { id: string } = await request.json()
+        const { productId }: { productId: string } = await request.json()
         
 
-    if (!id) {
+    if (!productId) {
       return NextResponse.json(
         { message: 'Product ID is required' },
         { status: 400 }
@@ -35,7 +35,7 @@ export const PUT = async (request:Request):Promise<NextResponse> => {
     }
 
 const updatePopularity = await  productModel.findByIdAndUpdate(
-  { _id: id }
+  { _id: productId }
         , {
             $inc:{popularity:1}
     });

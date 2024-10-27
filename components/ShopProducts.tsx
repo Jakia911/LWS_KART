@@ -26,6 +26,8 @@ const ShopProducts: React.FC<ShopPageProps> = ({
   userName,
 }) => {
   const { addToWishlist } = useWishlist();
+
+  //handle add to wishlist
   const handleAddToWishlist = (prod: wishlistItem) => {
     console.log(prod);
     console.log("clicked");
@@ -40,6 +42,22 @@ const ShopProducts: React.FC<ShopPageProps> = ({
     };
     console.log(product);
     addToWishlist(product);
+
+    //increase popularity
+    const productId = prod?.id;
+    try {
+      const res = fetch(`/api/products/trending`, {
+        method: "PUT",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ productId }),
+      });
+
+      if (!res) {
+        throw new Error("Product failed to update");
+      }
+    } catch (err: any) {
+      console.log("", err.message);
+    }
   };
   return (
     <div className="col-span-3">
