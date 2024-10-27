@@ -19,3 +19,31 @@ export const GET = async(request:Request):Promise<NextResponse> => {
         return NextResponse.json({ messege: "Error fetching Trending" }, {status:500});
     }
 }
+
+
+export const PUT = async (request:Request):Promise<NextResponse> => {
+    try {
+        dbConnect();
+        const { id }: { id: string } = await request.json()
+        
+
+    if (!id) {
+      return NextResponse.json(
+        { message: 'Product ID is required' },
+        { status: 400 }
+      );
+    }
+
+const updatePopularity = await  productModel.findByIdAndUpdate(
+  { _id: id }
+        , {
+            $inc:{popularity:1}
+    });
+         return  NextResponse.json({messege:"Error while updating product popularity",updatePopularity},{status:200})
+    } catch(err:any) 
+  
+     {
+        console.log(err, "Error updating product popularity")
+       return  NextResponse.json({messege:"Error while updating product popularity",err:err.message},{status:500})
+    }
+}

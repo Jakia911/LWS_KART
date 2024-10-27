@@ -1,59 +1,46 @@
 "use client";
+import { useWishlist } from "@/app/context/WishlistContext";
 import { Product } from "@/types/product";
 import Image from "next/image";
+import Link from "next/link";
 import prod1 from "../public/images/products/product1.jpg";
 
 interface ShopPageProps {
   filteredProducts: Product[];
+
+  userName: string | undefined | null;
 }
+interface wishlistItem {
+  id?: string;
+  title: string;
+  price?: number;
+  description: string;
+  category: string;
+  image?: string;
+  quantity?: number;
+  createdAt: Date;
+  popularity: number;
+}
+const ShopProducts: React.FC<ShopPageProps> = ({
+  filteredProducts,
+  userName,
+}) => {
+  const { addToWishlist } = useWishlist();
+  const handleAddToWishlist = (prod: wishlistItem) => {
+    console.log(prod);
+    console.log("clicked");
 
-// Fetch search term from server-side props
-// export const getServerSideProps: GetServerSideProps = async (context) => {
-//   const { search } = context.query; // Access query parameters from context
-//   console.log(search);
-//   // Return the search term as a prop or an empty string if not provided
-//   return {
-//     props: {
-//       searchTerm: (search as string) || "", // Type assertion ensures it's treated as a string
-//       // Initialize with an empty array, you can add logic to fetch default products
-//     },
-//   };
-// };
-
-const ShopProducts: React.FC<ShopPageProps> = ({ filteredProducts }) => {
-  // const [loading, setLoading] = useState<boolean>(true);
-
-  // useEffect(() => {
-  //   const fetchSearchedProducts = async () => {
-  //     try {
-  //       setLoading(true);
-  //       let data;
-  //       console.log(searchTerm);
-  //       // If there's a search term, fetch filtered products
-  //       if (searchTerm) {
-  //         const res = await fetch(
-  //           `/api/products?search=${encodeURIComponent(searchTerm)}`
-  //         );
-  //         data = await res.json();
-  //       }
-
-  //       // If search results are found, update state; otherwise, fallback to allProducts
-  //       if (data && data.length > 0) {
-  //         setProducts(data);
-  //       } else {
-  //         setProducts(allProducts);
-  //       }
-  //     } catch (err: any) {
-  //       console.log("Error fetching products", err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   // Fetch either the search results or show the default products
-  //   fetchSearchedProducts();
-  // }, [searchTerm, allProducts]); // Rerun effect when searchTerm or allProducts change
-
+    const product = {
+      userName: userName,
+      productId: prod?._id,
+      image: prod?.image,
+      name: prod?.title,
+      price: prod?.price,
+      wQuantity: 1,
+    };
+    console.log(product);
+    addToWishlist(product);
+  };
   return (
     <div className="col-span-3">
       <div className="grid md:grid-cols-3 grid-cols-2 gap-6">
@@ -92,11 +79,27 @@ const ShopProducts: React.FC<ShopPageProps> = ({ filteredProducts }) => {
                 </div>
               </div>
               <div className="pt-4 pb-3 px-4">
-                <a href="#">
-                  <h4 className="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
-                    {prod.title} {/* Use product name */}
-                  </h4>
-                </a>
+                <div className="flex justify-between items-center">
+                  <Link href={`/productDetails/${prod?.id}`}>
+                    <h4 className="uppercase font-medium text-xl mb-2 text-gray-800 hover:text-primary transition">
+                      {prod.title}
+                    </h4>
+                  </Link>
+                  <button onClick={() => handleAddToWishlist(prod)}>
+                    <svg
+                      stroke="#FD3D57"
+                      fill="#FD3D57"
+                      stroke-width="0"
+                      version="1.1"
+                      viewBox="0 0 16 16"
+                      height="1.5em"
+                      width="1.5em"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path d="M11.8 1c-1.682 0-3.129 1.368-3.799 2.797-0.671-1.429-2.118-2.797-3.8-2.797-2.318 0-4.2 1.882-4.2 4.2 0 4.716 4.758 5.953 8 10.616 3.065-4.634 8-6.050 8-10.616 0-2.319-1.882-4.2-4.2-4.2z"></path>
+                    </svg>
+                  </button>
+                </div>
                 <div className="flex items-baseline mb-1 space-x-2">
                   <p className="text-xl text-primary font-semibold">
                     ${prod.price}

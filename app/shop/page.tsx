@@ -4,9 +4,16 @@ import CategoryFilter from "@/components/shop/CategoryFilter";
 import PriceFilter from "@/components/shop/PriceFilter";
 import ShopProducts from "@/components/ShopProducts";
 import { Product } from "@/types/product";
+import { replaceMongoIdInArray } from "@/utils/data-util";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 const ShopPage = () => {
+  const { data: session, status } = useSession();
+
+  const userName: string | undefined | null = session?.user?.name;
+
+  console.log(userName);
   const [products, setProducts] = useState<Product[]>([]);
 
   // for category filter
@@ -32,7 +39,8 @@ const ShopPage = () => {
         return response.json(); // Parse the response as JSON
       })
       .then((data) => {
-        setProducts(data); // Set the fetched products data
+        const productsData = replaceMongoIdInArray(data);
+        setProducts(productsData);
       })
       .catch((error) => {
         setError(error.message); // Handle any error that occurs during fetching
@@ -426,7 +434,7 @@ const ShopPage = () => {
             </div>
           </div>
         </div>
-        <ShopProducts filteredProducts={filteredProducts} />
+        <ShopProducts filteredProducts={filteredProducts} userName={userName} />
       </div>
     </>
   );

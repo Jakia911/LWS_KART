@@ -12,7 +12,7 @@ interface WishlistRequestBody{
 }
 export const POST = async(request:Request):Promise<NextResponse> => {
   
-  const { productId, name, price, image,userName }: WishlistRequestBody = await request.json();
+  const {productId , name, price, image,userName }: WishlistRequestBody = await request.json();
   await dbConnect();
   
   const newWishlist = {

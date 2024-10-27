@@ -42,21 +42,6 @@ export const WishlistProvider = ({
 
   // Add a new product to the cart
   const addToWishlist = (product: WishlistItem) => {
-    setWishlist((prevWishlist) => {
-      const existingProduct = prevWishlist.find(
-        (item) => item.productId === product.productId
-      );
-      if (existingProduct) {
-        return prevWishlist.map((item) =>
-          item.productId === product.productId
-            ? { ...item, wQuantity: item.wQuantity + 1 }
-            : item
-        );
-      }
-      return [...prevWishlist, { ...product, wQuantity: 1 }];
-    });
-    console.log(product);
-    //send data to the database
     fetch(`/api/wishlist/`, {
       method: "POST",
       headers: {
@@ -71,7 +56,11 @@ export const WishlistProvider = ({
         return response.json();
       })
       .then((data) => {
-        console.log("Product added to wishlist in the database", data);
+        console.log(
+          "Product added to wishlist in the database",
+          "received wishlist data",
+          data
+        );
       })
       .catch((error) => {
         console.error("Error adding product to the wishlist:", error);
