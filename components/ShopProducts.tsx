@@ -32,7 +32,7 @@ const ShopProducts: React.FC<ShopPageProps> = ({
 
     const product = {
       userName: userName,
-      productId: prod?._id,
+      productId: prod?.id,
       image: prod?.image,
       name: prod?.title,
       price: prod?.price,

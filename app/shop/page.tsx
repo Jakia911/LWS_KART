@@ -4,7 +4,6 @@ import CategoryFilter from "@/components/shop/CategoryFilter";
 import PriceFilter from "@/components/shop/PriceFilter";
 import ShopProducts from "@/components/ShopProducts";
 import { Product } from "@/types/product";
-import { replaceMongoIdInArray } from "@/utils/data-util";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
@@ -39,16 +38,20 @@ const ShopPage = () => {
         return response.json(); // Parse the response as JSON
       })
       .then((data) => {
-        const productsData = replaceMongoIdInArray(data);
-        setProducts(productsData);
+        const transformedData = data.map((item: any) => ({
+          ...item,
+          id: item._id, // Assign _id to id
+          _id: undefined,
+        }));
+        setProducts(transformedData);
       })
       .catch((error) => {
-        setError(error.message); // Handle any error that occurs during fetching
+        setError(error.message);
       })
       .finally(() => {
-        setLoading(false); // Stop loading when fetch is complete
+        setLoading(false);
       });
-  }, []); // Only run once when the component mounts
+  }, []);
 
   const handleCategoryChange = (category: string) => {
     const updatedSelectedCategories = selectedCategories.includes(category)
