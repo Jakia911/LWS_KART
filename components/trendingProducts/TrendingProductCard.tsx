@@ -7,7 +7,7 @@ import { WishlistItem } from "@/types/wishList";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import prod1 from "../../public/images/products/product1.jpg"; // Ensure this path is correct
+import prod1 from "../../public/images/products/product1.jpg";
 
 interface TrendingProductCardProps {
   prod: Product;

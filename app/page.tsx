@@ -11,6 +11,7 @@ import method from "../public/images/methods.png";
 import offer from "../public/images/offer.jpg";
 
 export default async function Home() {
+  // const products = await getAllProducts();
   await dbConnect();
   return (
     <>
