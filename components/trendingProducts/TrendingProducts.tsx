@@ -21,7 +21,14 @@ const TrendingProducts = () => {
         if (!response.ok) throw new Error("Failed to fetch products");
         return response.json();
       })
-      .then((data) => setProducts(data))
+      .then((data) => {
+        const transformedData = data.map((item) => ({
+          ...item,
+          id: item._id, // Assign _id to id
+          _id: undefined,
+        }));
+        setProducts(transformedData);
+      })
       .catch((error) => setError(error.message))
       .finally(() => setLoading(false));
   };
