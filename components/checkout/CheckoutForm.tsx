@@ -44,6 +44,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ userName }) => {
             <p className="text-red-500">{errors.firstName.message}</p>
           )}
         </div>
+
         <div>
           <label htmlFor="last-name" className="text-gray-600">
             Last Name <span className="text-primary">*</span>
