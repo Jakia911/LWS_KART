@@ -3,9 +3,9 @@ import { useCart } from "@/app/context/CartContext";
 import { useWishlist } from "@/app/context/WishlistContext";
 import { CartItem } from "@/types/cart";
 import { Product } from "@/types/product";
-import { WishlistItem } from "@/types/wishList";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 import prod1 from "../../public/images/products/product1.jpg";
 
@@ -30,8 +30,77 @@ const TrendingProductCard: React.FC<TrendingProductCardProps> = ({
   const { addToCart } = useCart();
 
   const { addToWishlist } = useWishlist();
+  const router = useRouter();
 
-  //handle add to card
+  // //handle add to card
+  // const handleAddToCart = () => {
+  //   const product: CartItem = {
+  //     userName: userName,
+  //     productId: prod?.id,
+  //     image: prod?.image,
+  //     name: prod?.title,
+  //     price: prod?.price,
+  //     quantity: 1,
+  //   };
+  //   console.log(product);
+  //   addToCart(product);
+  // };
+
+  // //handle add to wishlist
+
+  // const handleAddToWishlist = () => {
+  //   console.log("clicked");
+
+  //   const product: WishlistItem = {
+  //     userName: userName,
+  //     productId: prod?.id,
+  //     image: prod?.image,
+  //     name: prod?.title,
+  //     price: prod?.price,
+  //     wQuantity: 1,
+  //   };
+  //   console.log(product);
+  //   addToWishlist(product);
+  // };
+
+  const handleAddToWishlist = () => {
+    console.log(prod);
+    console.log("clicked");
+
+    const product = {
+      userName: userName,
+      productId: prod?.id,
+      image: prod?.image,
+      name: prod?.title,
+      price: prod?.price,
+      wQuantity: 1,
+    };
+    console.log(product);
+
+    if (!userName) {
+      const redirectPath = window.location.pathname; // use window.location for the current path
+      router.push(`/login?redirect=${redirectPath}`);
+    } else {
+      addToWishlist(product);
+    }
+
+    //increase popularity
+    const productId = prod?.id;
+    try {
+      const res = fetch(`/api/products/trending`, {
+        method: "PUT",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ productId }),
+      });
+
+      if (!res) {
+        throw new Error("Product failed to update");
+      }
+    } catch (err: any) {
+      console.log("", err.message);
+    }
+  };
+
   const handleAddToCart = () => {
     const product: CartItem = {
       userName: userName,
@@ -42,24 +111,12 @@ const TrendingProductCard: React.FC<TrendingProductCardProps> = ({
       quantity: 1,
     };
     console.log(product);
-    addToCart(product);
-  };
-
-  //handle add to wishlist
-
-  const handleAddToWishlist = () => {
-    console.log("clicked");
-
-    const product: WishlistItem = {
-      userName: userName,
-      productId: prod?.id,
-      image: prod?.image,
-      name: prod?.title,
-      price: prod?.price,
-      wQuantity: 1,
-    };
-    console.log(product);
-    addToWishlist(product);
+    if (!userName) {
+      const redirectPath = window.location.pathname; // use window.location for the current path
+      router.push(`/login?redirect=${redirectPath}`);
+    } else {
+      addToCart(product);
+    }
   };
 
   console.log("product card user name", userName);

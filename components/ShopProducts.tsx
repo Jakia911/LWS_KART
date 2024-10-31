@@ -1,5 +1,6 @@
 "use client";
 import { useWishlist } from "@/app/context/WishlistContext";
+import { CartItem } from "@/types/cart";
 import { Product } from "@/types/product";
 import Image from "next/image";
 import Link from "next/link";
@@ -71,6 +72,25 @@ const ShopProducts: React.FC<ShopPageProps> = ({
       console.log("", err.message);
     }
   };
+
+  const handleAddToCart = (prod: CartItem) => {
+    const product: CartItem = {
+      userName: userName,
+      productId: prod?.id,
+      image: prod?.image,
+      name: prod?.title,
+      price: prod?.price,
+      quantity: 1,
+    };
+    console.log(product);
+    if (!userName) {
+      const redirectPath = window.location.pathname; // use window.location for the current path
+      router.push(`/login?redirect=${redirectPath}`);
+    } else {
+      addToCart(product);
+    }
+  };
+
   return (
     <div className="col-span-3">
       <div className="grid md:grid-cols-3 grid-cols-2 gap-6">
@@ -160,12 +180,12 @@ const ShopProducts: React.FC<ShopPageProps> = ({
                   <div className="text-xs text-gray-500 ml-3">(150)</div>
                 </div>
               </div>
-              <a
-                href="#"
+              <button
+                onClick={() => handleAddToCart(prod)}
                 className="block w-full py-1 text-center text-white bg-primary border border-primary rounded-b hover:bg-transparent hover:text-primary transition"
               >
                 Add to cart
-              </a>
+              </button>
             </div>
           ))
         ) : (

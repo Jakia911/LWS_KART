@@ -1,13 +1,20 @@
 "use client";
 import { Product } from "@/types/product";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const NewArrival = () => {
   const [newArrivals, setNewArrivals] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  const router = useRouter();
+
+  const { data: status, session } = useSession();
+  const userName = session?.user?.name;
 
   useEffect(() => {
     fetch("/api/products/topArrival")
@@ -26,6 +33,62 @@ const NewArrival = () => {
       .catch((error) => setError(error.message))
       .finally(() => setLoading(false));
   }, []);
+
+  const handleAddToWishlist = (prod: wishlistItem) => {
+    console.log(prod);
+    console.log("clicked");
+
+    const product = {
+      userName: userName,
+      productId: prod?.id,
+      image: prod?.image,
+      name: prod?.title,
+      price: prod?.price,
+      wQuantity: 1,
+    };
+    console.log(product);
+
+    if (!userName) {
+      const redirectPath = window.location.pathname; // use window.location for the current path
+      router.push(`/login?redirect=${redirectPath}`);
+    } else {
+      addToWishlist(product);
+    }
+
+    //increase popularity
+    const productId = prod?.id;
+    try {
+      const res = fetch(`/api/products/trending`, {
+        method: "PUT",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ productId }),
+      });
+
+      if (!res) {
+        throw new Error("Product failed to update");
+      }
+    } catch (err: any) {
+      console.log("", err.message);
+    }
+  };
+
+  const handleAddToCart = (prod: CartItem) => {
+    const product: CartItem = {
+      userName: userName,
+      productId: prod?.id,
+      image: prod?.image,
+      name: prod?.title,
+      price: prod?.price,
+      quantity: 1,
+    };
+    console.log(product);
+    if (!userName) {
+      const redirectPath = window.location.pathname; // use window.location for the current path
+      router.push(`/login?redirect=${redirectPath}`);
+    } else {
+      addToCart(product);
+    }
+  };
 
   return (
     <div className="container pb-16">
@@ -74,7 +137,7 @@ const NewArrival = () => {
                     {prod.title}
                   </h4>
                 </Link>
-                <button onClick={() => handleAddToWishlist()}>
+                <button onClick={() => handleAddToWishlist(prod)}>
                   <svg
                     stroke="#FD3D57"
                     fill="#FD3D57"
@@ -117,7 +180,7 @@ const NewArrival = () => {
               </div>
             </div>
             <button
-              onClick={() => handleAddToCart()}
+              onClick={() => handleAddToCart(prod)}
               className="block w-full py-1 text-center text-white bg-primary border border-primary rounded-b hover:bg-transparent hover:text-primary transition"
             >
               Add to cart
