@@ -3,6 +3,7 @@ import { useWishlist } from "@/app/context/WishlistContext";
 import { Product } from "@/types/product";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import prod1 from "../public/images/products/product1.jpg";
 
 interface ShopPageProps {
@@ -26,6 +27,11 @@ const ShopProducts: React.FC<ShopPageProps> = ({
   userName,
 }) => {
   const { addToWishlist } = useWishlist();
+  const router = useRouter();
+
+  // const {data:session,status}= useSession();
+
+  // const userName:string |undefined | null= session?.user?.name;
 
   //handle add to wishlist
   const handleAddToWishlist = (prod: wishlistItem) => {
@@ -41,7 +47,13 @@ const ShopProducts: React.FC<ShopPageProps> = ({
       wQuantity: 1,
     };
     console.log(product);
-    addToWishlist(product);
+
+    if (!userName) {
+      const redirectPath = window.location.pathname; // use window.location for the current path
+      router.push(`/login?redirect=${redirectPath}`);
+    } else {
+      addToWishlist(product);
+    }
 
     //increase popularity
     const productId = prod?.id;

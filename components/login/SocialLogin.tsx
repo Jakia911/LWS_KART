@@ -1,8 +1,25 @@
 "use client";
 
-import { signIn } from "next-auth/react";
-
+import { signIn, useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 const SocialLogin = () => {
+  const { data: session, status } = useSession();
+
+  const userName = session?.user?.name;
+
+  const router = useRouter();
+  const searchParams = useSearchParams(); // Use useSearchParams to access query params
+  const redirectPath = searchParams.get("redirect"); // Get the redirect path from the query
+
+  useEffect(() => {
+    if (userName) {
+      // Check if login is successful
+      // Redirect to the specified path or default to the homepage
+      router.push(redirectPath || "/");
+    }
+  }, [userName]);
+
   const handleAuth = () => {
     signIn("google", { callbackUrl: "http://localhost:3000/shop" });
   };
