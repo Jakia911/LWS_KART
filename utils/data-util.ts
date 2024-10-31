@@ -5,18 +5,20 @@ import { getServerSession } from "next-auth";
 export const replaceMongoIdInArray = (
   array: Array<{ _id: any }>
 ): Array<Record<string, any>> => {
-  // const mappedArray = array.map(item => ({
-  //   id: item._id.toString(),
-  //   ...item
-  // })).map(({ _id, ...rest }) => rest);
-  // return mappedArray;
+  const mappedArray = array
+    .map((item) => ({
+      id: item._id.toString(),
+      ...item,
+    }))
+    .map(({ _id, ...rest }) => rest);
+  return mappedArray;
 
-  const transformedData = data.map((item: any) => ({
-    ...item,
-    id: item._id, // Assign _id to id
-    _id: undefined,
-  }));
-  return transformedData;
+  // const transformedData = array.map((item: any) => ({
+  //   ...item,
+  //   id: item._id, // Assign _id to id
+  //   _id: undefined,
+  // }));
+  // return transformedData;
 };
 
 export const replaceMongoIdInObject = <T extends { _id: any }>(
