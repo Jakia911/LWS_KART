@@ -1,31 +1,39 @@
 "use client";
 
-// import { login } from "@/app/actions";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
+import { signIn } from "next-auth/react";
 // import { useRouter } from "next/navigation";
 // import { useState } from "react";
 
 const LoginForm = () => {
-  //   const [error, setError] = useState<string>("");
-  //   const router = useRouter();
+  const [error, setError] = useState<string>("");
+  const router = useRouter();
 
-  //   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-  //     event.preventDefault();
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
 
-  //     try {
-  //       const formData = new FormData(event.currentTarget);
-
-  //       // Assuming login function is properly typed
-  //       const response = await login(formData);
-
-  //       if (response.error) {
-  //         setError(response.error as string);
-  //       } else {
-  //         router.push("/shop");
-  //       }
-  //     } catch (err: any) {
-  //       setError(err.message || "An unexpected error occurred");
-  //     }
-  //   }
+    try {
+      const formData = new FormData(event.currentTarget);
+      const email = formData.get("email")?.toString();
+      const password = formData.get("password")?.toString();
+      // Assuming login function is properly typed
+      const response = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+      console.log(response);
+      if (response.error) {
+        setError(response.error as string);
+      } else {
+        router.push("/shop");
+      }
+    } catch (err: any) {
+      setError(err.message || "An unexpected error occurred");
+    }
+  }
 
   // new login data
   const loginUser = async (formData: FormData) => {
@@ -48,7 +56,7 @@ const LoginForm = () => {
   return (
     <>
       {/* {error && <div className="text-xl text-red-500 text-center">{error}</div>} */}
-      <form action="#" method="post">
+      <form action="#" method="post" onSubmit={handleSubmit}>
         <div className="space-y-2">
           <div>
             <label className="text-gray-600 mb-2 block">Email address</label>

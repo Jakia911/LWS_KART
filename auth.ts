@@ -4,6 +4,7 @@ import { Adapter } from "next-auth/adapters";
 import GoogleProvider from "next-auth/providers/google";
 import mongoClientPromise from "./database/mongoClientPromise";
 
+import CredentialsProvider from "next-auth/providers/credentials";
 // Define NextAuth options
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXT_AUTH_SECRET,
@@ -18,40 +19,33 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
-
     CredentialsProvider({
-      credentials: {
-        email: {},
-        password: {},
-      },
-      async authorize(
-        credentials: Record<"email" | "password", string> | undefined
-      ): Promise<User | null> {
-        if (!credentials) {
-          return null;
-        }
+      async authorize(credentials) {
+        if (credentials == null) return null;
 
         try {
-          const user = await userModel.findOne({ email: credentials.email });
+          const user = await User.findOne({ email: credentials?.email });
+          console.log(user);
+
           if (user) {
-            const isMatch = await compare(credentials.password, user.password);
+            const isMatch = await bcrypt.compare(
+              credentials.password,
+              user.password
+            );
+
             if (isMatch) {
-              const userId: string = (user._id as ObjectId).toString();
-              return {
-                id: userId,
-                name: user.name,
-                email: user.email,
-                image: user.image,
-              };
+              return user;
             } else {
-              throw new Error("Email or password mismatch");
+              console.error("password mismatch");
+              throw new Error("Check your password");
             }
           } else {
+            console.error("User not found");
             throw new Error("User not found");
           }
-        } catch (error) {
-          console.error("Authorization error:", error);
-          return null; // Return null if there's an error
+        } catch (err) {
+          console.error(err);
+          throw new Error(err);
         }
       },
     }),
@@ -68,3 +62,40 @@ export { handler as GET, handler as POST };
 //      signIn,
 //      signOut,
 // } = NextAuth(authOptions);
+
+// CredentialsProvider({
+//   credentials: {
+//     email: {},
+//     password: {},
+//   },
+//   async authorize(
+//     credentials: Record<"email" | "password", string> | undefined
+//   ): Promise<User | null> {
+//     if (!credentials) {
+//       return null;
+//     }
+
+//     try {
+//       const user = await userModel.findOne({ email: credentials.email });
+//       if (user) {
+//         const isMatch = await compare(credentials.password, user.password);
+//         if (isMatch) {
+//           const userId: string = (user._id as ObjectId).toString();
+//           return {
+//             id: userId,
+//             name: user.name,
+//             email: user.email,
+//             image: user.image,
+//           };
+//         } else {
+//           throw new Error("Email or password mismatch");
+//         }
+//       } else {
+//         throw new Error("User not found");
+//       }
+//     } catch (error) {
+//       console.error("Authorization error:", error);
+//       return null; // Return null if there's an error
+//     }
+//   },
+// }),
