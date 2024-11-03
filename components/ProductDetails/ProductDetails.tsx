@@ -9,6 +9,7 @@ import product3 from "../../public/images/products/product3.jpg";
 import product4 from "../../public/images/products/product4.jpg";
 import product5 from "../../public/images/products/product5.jpg";
 import product6 from "../../public/images/products/product6.jpg";
+import ShareButtons from "./ShareButtons";
 
 interface ProductDetailsProps {
   product:
@@ -20,6 +21,8 @@ interface ProductDetailsProps {
 }
 
 const ProductDetails: FC<ProductDetailsProps> = ({ product, userName }) => {
+  const shareUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/productDetails/${product?.id}`;
+  const title = product?.name;
   // handle add to cart
   const handleAddToCart = async () => {
     const wishlistData = {
@@ -283,25 +286,8 @@ const ProductDetails: FC<ProductDetailsProps> = ({ product, userName }) => {
           </button>
         </div>
 
-        <div className="flex gap-3 mt-4">
-          <a
-            href="#"
-            className="text-gray-400 hover:text-gray-500 h-8 w-8 rounded-full border border-gray-300 flex items-center justify-center"
-          >
-            <i className="fa-brands fa-facebook-f"></i>
-          </a>
-          <a
-            href="#"
-            className="text-gray-400 hover:text-gray-500 h-8 w-8 rounded-full border border-gray-300 flex items-center justify-center"
-          >
-            <i className="fa-brands fa-twitter"></i>
-          </a>
-          <a
-            href="#"
-            className="text-gray-400 hover:text-gray-500 h-8 w-8 rounded-full border border-gray-300 flex items-center justify-center"
-          >
-            <i className="fa-brands fa-instagram"></i>
-          </a>
+        <div className="pt-8">
+          <ShareButtons url={shareUrl} title={title} />
         </div>
       </div>
     </div>
