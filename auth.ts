@@ -35,6 +35,7 @@ export const authOptions: NextAuthOptions = {
 
             if (isMatch) {
               return user;
+              P;
             } else {
               console.error("password mismatch");
               throw new Error("Check your password");
