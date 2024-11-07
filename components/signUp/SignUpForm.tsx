@@ -6,78 +6,83 @@ import { useState } from "react";
 const SignUpForm = () => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
- 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const signUpData = {
-      name:name;
-      email:email;
-      password:password
-    }
-    const res = await fetch('/api/auth/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(signUpData),
-    });
+      name,
+      email,
+      password,
+    };
 
-    if (res.ok) {
-      router.push('/auth/signin');
-    } else {
-      const data = await res.json();
-      setError(data.message);
+    try {
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(signUpData),
+      });
+
+      if (res.ok) {
+        router.push("/auth/signin");
+      } else {
+        const data = await res.json();
+        setError(data.message || "Registration failed");
+      }
+    } catch (err) {
+      setError("An unexpected error occurred");
     }
   };
 
-  // async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-  //   event.preventDefault();
-  //   try {
-  //     const formData = new FormData(event.currentTarget);
-  //     const name = formData.get("name") as string | null;
-
-  //     const email = formData.get("email") as string | null;
-  //     const password = formData.get("password") as string | null;
-
-  //     if (!name || !email || !password) {
-  //       throw new Error("All fields are required");
-  //     }
-  //     console.log(name, email);
-  //     const res = await fetch("/api/auth/register", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         name,
-  //         email,
-  //         password,
-  //       }),
-  //     });
-
-  //     if (res.status === 201) {
-  //       router.push("/login");
-  //     } else {
-  //       const data = await res.json();
-  //       throw new Error(data.message || "Registration failed");
-  //     }
-  //   } catch (error: any) {
-  //     setError(error.message || "An unexpected error occurred");
-  //   }
-  // }
-
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} required />
-      <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-      <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-      {error && <p>{error}</p>}
-      <button type="submit">Register</button>
-    </form>
+    <div className="flex items-center justify-center  bg-gray-100">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-lg"
+      >
+        <h2 className="text-2xl font-bold text-center text-gray-700">
+          Sign Up
+        </h2>
+
+        <input
+          type="text"
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+          className="w-full px-4 py-2 text-gray-700 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
+
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          className="w-full px-4 py-2 text-gray-700 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
+
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          className="w-full px-4 py-2 text-gray-700 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
+
+        <button
+          type="submit"
+          className="bg-black text-white w-full py-2 rounded-md"
+        >
+          Register
+        </button>
+      </form>
+    </div>
   );
 };
 

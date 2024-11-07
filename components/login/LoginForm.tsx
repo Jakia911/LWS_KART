@@ -1,110 +1,68 @@
 "use client";
 
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import { signIn } from "next-auth/react";
-// import { useRouter } from "next/navigation";
-// import { useState } from "react";
-
-const LoginForm = () => {
-  const [error, setError] = useState<string>("");
+const LoginForm: React.FC = () => {
   const router = useRouter();
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-    try {
-      const formData = new FormData(event.currentTarget);
-      const email = formData.get("email")?.toString();
-      const password = formData.get("password")?.toString();
-      // Assuming login function is properly typed
-      const response = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
-      });
-      console.log(response);
-      if (response.error) {
-        setError(response.error as string);
-      } else {
-        router.push("/shop");
-      }
-    } catch (err: any) {
-      setError(err.message || "An unexpected error occurred");
-    }
-  }
-
-  // new login data
-  const loginUser = async (formData: FormData) => {
-    const email = formData.get("email");
-    const password = formData.get("password");
-
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
-      body: JSON.stringify({ email, password }),
+    const result = await signIn("credentials", {
+      redirect: false,
+      email,
+      password,
     });
 
-    const data = await res.json();
-    if (res.ok) {
-      // Handle successful login (redirect, etc.)
+    if (result?.error) {
+      setError(result.error);
     } else {
-      // Handle error
-      console.error(data.error);
+      router.push("/protected"); // Redirect to a protected page on successful login
     }
   };
+
   return (
-    <>
-      {/* {error && <div className="text-xl text-red-500 text-center">{error}</div>} */}
-      <form action="#" method="post" onSubmit={handleSubmit}>
-        <div className="space-y-2">
-          <div>
-            <label className="text-gray-600 mb-2 block">Email address</label>
-            <input
-              type="email"
-              name="email"
-              id="email"
-              className="block w-full border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400"
-              placeholder="youremail.@domain.com"
-            />
-          </div>
-          <div>
-            <label className="text-gray-600 mb-2 block">Password</label>
-            <input
-              type="password"
-              name="password"
-              id="password"
-              className="block w-full border border-gray-300 px-4 py-3 text-gray-600 text-sm rounded focus:ring-0 focus:border-primary placeholder-gray-400"
-              placeholder="*******"
-            />
-          </div>
-        </div>
-        <div className="flex items-center justify-between mt-6">
-          <div className="flex items-center">
-            <input
-              type="checkbox"
-              name="remember"
-              id="remember"
-              className="text-primary focus:ring-0 rounded-sm cursor-pointer"
-            />
-            <label className="text-gray-600 ml-3 cursor-pointer">
-              Remember me
-            </label>
-          </div>
-          <a href="#" className="text-primary">
-            Forgot password
-          </a>
-        </div>
-        <div className="mt-4">
-          <button
-            type="submit"
-            className="block w-full py-2 text-center text-white bg-primary border border-primary rounded hover:bg-transparent hover:text-primary transition uppercase font-roboto font-medium"
-          >
-            Login
-          </button>
-        </div>
+    <div className="flex items-center justify-center  bg-gray-100">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-lg"
+      >
+        <h2 className="text-2xl font-bold text-center text-gray-700">
+          Sign In
+        </h2>
+
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          className="w-full px-4 py-2 text-gray-700 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
+
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          className="w-full px-4 py-2 text-gray-700 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
+
+        {error && <p className="text-sm text-red-600">{error}</p>}
+
+        <input
+          type="submit"
+          value="Sign In"
+          className="bg-black text-white w-full py-2 rounded-md"
+        />
       </form>
-    </>
+    </div>
   );
 };
 
