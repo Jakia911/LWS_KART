@@ -1,4 +1,13 @@
-const AccountWrapper = () => {
+import { authOptions } from "@/auth";
+import { getServerSession } from "next-auth";
+import Image from "next/image";
+
+const AccountWrapper = async () => {
+  const session = await getServerSession(authOptions);
+
+  const userName = session?.user?.name;
+  const userEmail = session?.user?.email;
+  const userImage = session?.user?.image;
   return (
     <div className="container  items-start gap-6 pt-4 pb-16">
       <div className=" grid grid-cols-3 gap-4 mx-auto max-w-5xl">
@@ -12,9 +21,16 @@ const AccountWrapper = () => {
             </a>
           </div>
           <div className="space-y-1">
-            <h4 className="text-gray-700 font-medium">John Doe</h4>
-            <p className="text-gray-800">example@mail.com</p>
-            <p className="text-gray-800">0811 8877 988</p>
+            <h4 className="text-gray-700 font-medium">{userName}</h4>
+            <p className="text-gray-800">{userEmail}</p>
+            <Image
+              src={userImage}
+              width={60}
+              height={60}
+              alt="User Image"
+              className="rounded-lg"
+            />
+            <p>{userImage}</p>
           </div>
         </div>
 

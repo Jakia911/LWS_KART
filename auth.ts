@@ -1,10 +1,12 @@
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
+import bcrypt from "bcryptjs";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import { Adapter } from "next-auth/adapters";
 import GoogleProvider from "next-auth/providers/google";
 import mongoClientPromise from "./database/mongoClientPromise";
 
 import CredentialsProvider from "next-auth/providers/credentials";
+import { userModel } from "./models/user-model";
 // Define NextAuth options
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXT_AUTH_SECRET,
@@ -20,11 +22,16 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
     CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" },
+      },
       async authorize(credentials) {
         if (credentials == null) return null;
 
         try {
-          const user = await User.findOne({ email: credentials?.email });
+          const user = await userModel.findOne({ email: credentials?.email });
           console.log(user);
 
           if (user) {
@@ -35,7 +42,6 @@ export const authOptions: NextAuthOptions = {
 
             if (isMatch) {
               return user;
-              P;
             } else {
               console.error("password mismatch");
               throw new Error("Check your password");

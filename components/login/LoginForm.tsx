@@ -19,10 +19,11 @@ const LoginForm: React.FC = () => {
       password,
     });
 
-    if (result?.error) {
-      setError(result.error);
+    if (result?.ok) {
+      // Redirect to /shop on successful login
+      router.push("/shop");
     } else {
-      router.push("/protected"); // Redirect to a protected page on successful login
+      setError(result?.error || "Login failed");
     }
   };
 

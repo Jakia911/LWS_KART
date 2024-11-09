@@ -28,7 +28,7 @@ const SignUpForm = () => {
       });
 
       if (res.ok) {
-        router.push("/auth/signin");
+        router.push("/login");
       } else {
         const data = await res.json();
         setError(data.message || "Registration failed");
