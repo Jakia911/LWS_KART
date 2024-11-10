@@ -1,6 +1,7 @@
 import { authOptions } from "@/auth";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
+import UpdateUserModalButton from "./UpdateUserModalButton";
 
 const AccountWrapper = async () => {
   const session = await getServerSession(authOptions);
@@ -16,9 +17,7 @@ const AccountWrapper = async () => {
             <h3 className="font-medium text-gray-800 text-lg">
               Personal Profile
             </h3>
-            <a href="#" className="text-primary">
-              Edit
-            </a>
+            <UpdateUserModalButton />
           </div>
           <div className="space-y-1">
             <h4 className="text-gray-700 font-medium">{userName}</h4>
