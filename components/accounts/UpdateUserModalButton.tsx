@@ -8,6 +8,9 @@ const UpdateUserModalButton = () => {
   };
 
   const closeModal = () => setIsModalOpen(false);
+
+
+  
   return (
     <button 
     onClick={openModal}
