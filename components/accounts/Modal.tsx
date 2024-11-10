@@ -7,13 +7,18 @@ interface Modal {
 }
 
 const Modal: React.FC<Modal> = (isOpen, closeModal) => {
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
+    const {data:session,status}=useSession();
 
-  const {data:session,status}=useSession();
+    
+    
+  const [email, setEmail] = useState(session? user?.email);
+  const [name, setName] = useState(session? user?.name);
 
-  const userName = session? user?.name;
+  const [messege,setMessege] = useState('');
 
+
+
+ 
   const modalRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -32,14 +37,27 @@ const Modal: React.FC<Modal> = (isOpen, closeModal) => {
   }, [isOpen]);
 
 
-  const handleSubmit = ()=>{
-    
-const updatedUser ={
-    userName:userName,
-    name,
-    email
-}
-  }
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch('/api/user/update', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setMessage('Profile updated successfully!');
+      } else {
+        setMessage(`Error: ${data.message}`);
+      }
+    } catch (error) {
+      setMessage('An error occurred while updating the profile.');
+    }
+  };
 
 
   isOpen ? (
