@@ -1,3 +1,5 @@
+"use client";
+import { useState } from "react";
 import Modal from "./Modal";
 
 const UpdateUserModalButton = () => {
@@ -9,16 +11,13 @@ const UpdateUserModalButton = () => {
 
   const closeModal = () => setIsModalOpen(false);
 
-
-  
   return (
-    <button 
-    onClick={openModal}
-    className="text-primary">
-      Edit
-    </button>
- <Modal isOpen={isModalOpen} closeModal={closeModal} />
-
+    <>
+      <button onClick={openModal} className="text-primary">
+        Edit
+      </button>
+      <Modal isModalOpen={isModalOpen} closeModal={closeModal} />
+    </>
   );
 };
 

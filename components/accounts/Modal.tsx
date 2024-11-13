@@ -1,97 +1,102 @@
+"use client";
+
 import { useSession } from "next-auth/react";
+import React, { useEffect, useRef, useState } from "react";
 
-interface Modal {
-  isOpen: boolean;
-
+interface ModalProps {
+  isModalOpen: boolean;
   closeModal: () => void;
 }
 
-const Modal: React.FC<Modal> = (isOpen, closeModal) => {
-    const {data:session,status}=useSession();
+const Modal: React.FC<ModalProps> = ({ isModalOpen, closeModal }) => {
+  const { data: session } = useSession();
 
-    
-    
-  const [email, setEmail] = useState(session? user?.email);
-  const [name, setName] = useState(session? user?.name);
-
-  const [messege,setMessege] = useState('');
-
-
-
- 
+  const [email, setEmail] = useState(session?.user?.email || "");
+  const [name, setName] = useState(session?.user?.name || "");
+  const [message, setMessage] = useState("");
   const modalRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
         closeModal();
       }
     };
 
-    if (isOpen) {
+    if (isModalOpen) {
       document.addEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isOpen]);
+  }, [isModalOpen, closeModal]);
 
-
-  const handleUpdate = async (e) => {
+  const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const res = await fetch('/api/user/update', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/user/update", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email }),
       });
 
       const data = await res.json();
 
       if (res.ok) {
-        setMessage('Profile updated successfully!');
+        setMessage("Profile updated successfully!");
       } else {
         setMessage(`Error: ${data.message}`);
       }
     } catch (error) {
-      setMessage('An error occurred while updating the profile.');
+      setMessage("An error occurred while updating the profile.");
     }
+
+    closeModal();
   };
 
+  if (!isModalOpen) return null;
 
-  isOpen ? (
-    <form
-      onSubmit={handleSubmit}
-      className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-lg"
-    >
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-        className="w-full px-4 py-2 text-gray-700 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-      />
-
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setName(e.target.value)}
-        required
-        className="w-full px-4 py-2 text-gray-700 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-      />
-
-      {error && <p className="text-sm text-red-600">{error}</p>}
-
-      <input
-        type="submit"
-        value="Submit"
-        className="bg-black text-white w-full py-2 rounded-md"
-      />
-    </form>
-  ) : null;
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50">
+      <div
+        ref={modalRef}
+        className="bg-white p-6 rounded shadow-lg max-w-md w-full"
+      >
+        <form onSubmit={handleUpdate}>
+          <div>
+            <label className="block text-gray-700">Name:</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full px-3 py-2 border rounded text-[#000]"
+            />
+          </div>
+          <div className="mt-4">
+            <label className="block text-gray-700">Email:</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-3 py-2 border rounded text-[#000]"
+            />
+          </div>
+          <button
+            type="submit"
+            className="bg-black text-white w-full py-2 rounded-md mt-6"
+          >
+            Update Profile
+          </button>
+        </form>
+        {message && <p className="mt-2 text-sm text-red-500">{message}</p>}
+      </div>
+    </div>
+  );
 };
 
 export default Modal;
