@@ -58,23 +58,14 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.sub;
-        session.user.name = token.name;
-        session.user.email = token.email;
-      }
+    async session({ session, user }) {
+      // Pull the latest data from the database
+      const dbUser = await userModel.findOne({ email: user.email });
+      session.user.name = dbUser?.name;
+      session.user.email = dbUser?.email;
+
       return session;
     },
-    async jwt({ token, user }) {
-      if (user) {
-        token.sub = user.id;
-        token.name = user.name;
-        token.email = user.email;
-      }
-      return token;
-    },
-  },
 };
 
 const handler = NextAuth(authOptions);
